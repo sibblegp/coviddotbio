@@ -28,7 +28,3 @@ class DataLoader:
         # for row in data:
         #     print(row)
         return data
-
-
-if __name__ == "__main__":
-    DataLoader().load_jh_data()
