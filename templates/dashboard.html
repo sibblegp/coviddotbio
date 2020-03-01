@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Twitter -->
+    <meta name="twitter:site" content="@themepixels">
+    <meta name="twitter:creator" content="@themepixels">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DashForge">
+    <meta name="twitter:description" content="Responsive Bootstrap 4 Dashboard Template">
+    <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+
+    <!-- Facebook -->
+    <meta property="og:url" content="http://themepixels.me/dashforge">
+    <meta property="og:title" content="DashForge">
+    <meta property="og:description" content="Responsive Bootstrap 4 Dashboard Template">
+
+    <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- Meta -->
+    <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
+    <meta name="author" content="ThemePixels">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.png">
+
+    <title>COVID</title>
+
+    <!-- vendor css -->
+    <link href="/static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="/static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
+<!--    <link href="/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
+<!--    <link href="/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
+<!--    <link href="/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
+<!--    <link href="/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
+<!--    <link href="/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
+
+    <!-- DashForge CSS -->
+    <link rel="stylesheet" href="/static/css/dashforge.css">
+    <link rel="stylesheet" href="/static/css/dashforge.dashboard.css">
+</head>
+<body class="page-profile">
+
+<header class="navbar navbar-header navbar-header-fixed ">
+    <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
+    <div class="navbar-brand">
+        <a href="../../index.html" class="df-logo">dash<span>forge</span></a>
+    </div><!-- navbar-brand -->
+    <div id="navbarMenu" class="navbar-menu-wrapper">
+        <div class="navbar-menu-header">
+            <a href="../../index.html" class="df-logo">dash<span>forge</span></a>
+            <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
+        </div><!-- navbar-menu-header -->
+        <ul class="nav navbar-menu">
+            <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
+            <li class="nav-item active">
+                <a href="" class="nav-link"><i data-feather="pie-chart"></i> Worldwide</a>
+
+            </li>
+            <li class="nav-item with-sub">
+                <a href="" class="nav-link"><i data-feather="package"></i> Country Data</a>
+                <ul class="navbar-menu-sub">
+                    <li class="nav-sub-item"><a href="app-calendar.html" class="nav-sub-link"><i
+                            data-feather="calendar"></i>Calendar</a></li>
+                    <li class="nav-sub-item"><a href="app-chat.html" class="nav-sub-link"><i
+                            data-feather="message-square"></i>Chat</a></li>
+                    <li class="nav-sub-item"><a href="app-contacts.html" class="nav-sub-link"><i
+                            data-feather="users"></i>Contacts</a></li>
+                    <li class="nav-sub-item"><a href="app-file-manager.html" class="nav-sub-link"><i
+                            data-feather="file-text"></i>File Manager</a></li>
+                    <li class="nav-sub-item"><a href="app-mail.html" class="nav-sub-link"><i data-feather="mail"></i>Mail</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div><!-- navbar-menu-wrapper -->
+    <div class="navbar-right">
+
+    </div><!-- navbar-right -->
+</header><!-- navbar -->
+
+<div class="content content-fixed">
+    <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+        <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                        <li class="breadcrumb-item"><a href="#">Covid.bio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Worldwide</li>
+                    </ol>
+                </nav>
+                <h4 class="mg-b-0 tx-spacing--1">Covid-19 Worldwide Statistics</h4>
+            </div>
+            <div class="d-none d-md-block">
+                <!--            <button class="btn btn-sm pd-x-15 btn-white btn-uppercase"><i data-feather="mail" class="wd-10 mg-r-5"></i> Email</button>-->
+
+            </div>
+        </div>
+
+        <div class="row row-xs">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-body">
+                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Total Cases</h6>
+                    <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">85,123</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,207 <i
+                                class="icon ion-md-arrow-up"></i></span> new cases today</p>
+                    </div>
+                    <div class="chart-three">
+                        <div id="flotChart3" class="flot-chart ht-30"></div>
+                    </div><!-- chart-three -->
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
+                <div class="card card-body">
+                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Active Cases</h6>
+                    <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">40,293</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,110 <i
+                                class="icon ion-md-arrow-up"></i></span> additional active cases today</p>
+                    </div>
+                    <div class="chart-three">
+                        <div id="flotChart4" class="flot-chart ht-30"></div>
+                    </div><!-- chart-three -->
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                <div class="card card-body">
+                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Recovered</h6>
+                    <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">38,643</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">2,495 <i
+                                class="icon ion-md-arrow-down"></i></span> people recovered today</p>
+                    </div>
+                    <div class="chart-three">
+                        <div id="flotChart5" class="flot-chart ht-30"></div>
+                    </div><!-- chart-three -->
+                </div>
+            </div><!-- col -->
+            <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
+                <div class="card card-body">
+                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Deaths</h6>
+                    <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">2,753</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">12 <i
+                                class="icon ion-md-arrow-up"></i></span> deaths today</p>
+                    </div>
+                    <div class="chart-three">
+                        <div id="flotChart6" class="flot-chart ht-30"></div>
+                    </div><!-- chart-three -->
+                </div>
+            </div><!-- col -->
+
+
+            <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="card card-crypto">
+                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
+                        <nav class="nav nav-line">
+                            <a href="" class="nav-link active">Totals</a>
+                            <a href="" class="nav-link">Daily Changes</a>
+                        </nav>
+                        <div class="d-flex mg-t-20 mg-sm-t-0">
+                            <div class="btn-group flex-fill">
+                                <button class="btn btn-white btn-xs active">Normal</button>
+                                <button class="btn btn-white btn-xs">Log</button>
+                            </div>
+                        </div>
+                    </div><!-- card-header -->
+                    <div class="card-body pos-relative pd-0">
+                        <div class="pos-absolute t-20 l-20 wd-xl-100p z-index-10">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Mortality
+                                        Rate</h6>
+                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1%</h3>
+
+                                </div><!-- col -->
+                                <div class="col-sm-5 mg-t-20 mg-sm-t-0">
+                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Resolved
+                                        Cases Mortality Rate</h6>
+                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">22.1%</h3>
+                                </div><!-- col -->
+                            </div><!-- row -->
+                        </div>
+
+                        <div class="chart-one">
+                            <div id="flotChart" class="flot-chart"></div>
+                        </div><!-- chart-one -->
+                    </div><!-- card-body -->
+
+                </div><!-- card -->
+            </div><!-- col -->
+
+
+            <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="card mg-b-10">
+                    <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
+                        <div>
+                            <h6 class="mg-b-5">Country Reports</h6>
+                            <p class="tx-13 tx-color-03 mg-b-0">Track your countries numbers</p>
+                        </div>
+                        <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
+                        <!--                  <div class="btn-group flex-fill">-->
+                        <!--                    <button class="btn btn-white btn-xs active">Range</button>-->
+                        <!--                    <button class="btn btn-white btn-xs">Period</button>-->
+                        <!--                  </div>-->
+                        <!--                </div>-->
+                    </div><!-- card-header -->
+                    <div class="card-body pd-y-10">
+                        <!--                <div class="d-sm-flex">-->
+                        <!--                  <div class="media">-->
+                        <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-teal tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-6">-->
+                        <!--                      <i data-feather="bar-chart-2"></i>-->
+                        <!--                    </div>-->
+                        <!--                    <div class="media-body">-->
+                        <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold tx-nowrap mg-b-5 mg-md-b-8">Gross Earnings</h6>-->
+                        <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,958,104</h4>-->
+                        <!--                    </div>-->
+                        <!--                  </div>-->
+                        <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                        <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-pink tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-5">-->
+                        <!--                      <i data-feather="bar-chart-2"></i>-->
+                        <!--                    </div>-->
+                        <!--                    <div class="media-body">-->
+                        <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Tax Withheld</h6>-->
+                        <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$234,769<small>.50</small></h4>-->
+                        <!--                    </div>-->
+                        <!--                  </div>-->
+                        <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                        <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-primary tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-4">-->
+                        <!--                      <i data-feather="bar-chart-2"></i>-->
+                        <!--                    </div>-->
+                        <!--                    <div class="media-body">-->
+                        <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Net Earnings</h6>-->
+                        <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,608,469<small>.50</small></h4>-->
+                        <!--                    </div>-->
+                        <!--                  </div>-->
+                        <!--                </div>-->
+                    </div><!-- card-body -->
+                    <div class="table-responsive pd-l-1 pd-lg-l-1 pd-r-2 pd-lg-r-2">
+                        <table id="example2" class="table table-dashboard mg-b-0">
+                            <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th class="text-center">Confirmed Cases</th>
+                                <th class="text-center">Active Infections</th>
+                                <th class="text-center">Recovered</th>
+                                <th class="text-center">Deaths</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="tx-color-03 tx-normal">China</td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                              <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                                <td class="tx-medium text-right">2,706 <span
+                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- table-responsive -->
+                </div><!-- card -->
+
+
+            </div><!-- col -->
+
+
+        </div><!-- row -->
+    </div><!-- container -->
+</div><!-- content -->
+
+<!--<footer class="footer">-->
+<!--    <div>-->
+<!--        <span>&copy; 2019 DashForge v1.0.0. </span>-->
+<!--        <span>Created by <a href="http://themepixels.me">ThemePixels</a></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <nav class="nav">-->
+<!--            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>-->
+<!--            <a href="../../change-log.html" class="nav-link">Change Log</a>-->
+<!--            <a href="https://discordapp.com/invite/RYqkVuw" class="nav-link">Get Help</a>-->
+<!--        </nav>-->
+<!--    </div>-->
+<!--</footer>-->
+
+<script src="/static/lib/jquery/jquery.min.js"></script>
+<script src="/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/lib/feather-icons/feather.min.js"></script>
+<script src="/static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/static/lib/jquery.flot/jquery.flot.js"></script>
+<script src="/static/lib/jquery.flot/jquery.flot.stack.js"></script>
+<script src="/static/lib/jquery.flot/jquery.flot.resize.js"></script>
+<script src="/static/lib/chart.js/Chart.bundle.min.js"></script>
+<script src="/static/lib/jqvmap/jquery.vmap.min.js"></script>
+<script src="/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+
+<script src="/static/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/static/lib/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+<script src="/static/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/static/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
+
+<script src="/static/js/dashforge.js"></script>
+<script src="/static/js/dashforge.sampledata.js"></script>
+<script src="/static/js/dashboard-one.js"></script>
+
+<!-- append theme customizer -->
+<script src="/static/lib/js-cookie/js.cookie.js"></script>
+<script src="/static/js/dashforge.settings.js"></script>
+
+<script>
+              $('#example2').DataTable({
+  responsive: true,
+  paging: false,
+  searching: false,
+  "info": false,
+  language: {
+    searchPlaceholder: 'Search...',
+    sSearch: '',
+    lengthMenu: '_MENU_ items/page',
+  }
+});
+
+      $(function(){
+        'use strict'
+
+        $.plot('#flotChart1', [{
+            data: df3,
+            color: '#e1e5ed',
+            lines: {
+              lineWidth: 1
+            }
+          },{
+            data: df3,
+            color: '#69b2f8',
+            lines: {
+              lineWidth: 1
+            }
+          },{
+            data: df3,
+            color: '#0168fa'
+          }], {
+    			series: {
+            stack: 0,
+    				shadowSize: 0,
+            lines: {
+              show: true,
+              lineWidth: 1.7,
+              fill: true,
+              fillColor: { colors: [ { opacity: 0 }, { opacity: 0.2 } ] }
+            }
+    			},
+          grid: {
+            borderWidth: 0,
+            labelMargin: 5,
+            hoverable: true
+          },
+    			yaxis: {
+            show: true,
+            color: 'rgba(72, 94, 144, .1)',
+            min: 0,
+            max: 160,
+            font: {
+              size: 10,
+              color: '#8392a5'
+            }
+          },
+    			xaxis: {
+            show: true,
+            color: 'rgba(72, 94, 144, .1)',
+            ticks: [[0, '08:00'], [20, '09:00'], [40, '10:00'], [60, '11:00'], [80, '12:00'], [100, '13:00'], [120, '14:00'], [140, '15:00']],
+            font: {
+              size: 10,
+              family: 'Arial, sans-serif',
+              color: '#8392a5'
+            },
+            reserveSpace: false
+          }
+    		});
+
+        function flotOption(min, max) {
+          return {
+            series: {
+              stack: 0,
+              shadowSize: 0,
+              lines: {
+                show: true,
+                lineWidth: 1.5,
+                fill: true,
+                fillColor: { colors: [ { opacity: 0 }, { opacity: 0.2 } ] }
+              }
+            },
+            grid: { borderWidth: 0 },
+            yaxis: { show: false },
+            xaxis: {
+              show: false,
+              min: min,
+              max: max
+            }
+          }
+        }
+
+
+
+      })
+
+      window.darkMode = function(){
+          $('.btn-white').addClass('btn-dark').removeClass('btn-white');
+
+
+        }
+
+        window.lightMode = function() {
+          $('.btn-dark').addClass('btn-white').removeClass('btn-dark');
+
+
+        }
+
+        var hasMode = Cookies.get('df-mode');
+        if(hasMode === 'dark') {
+          darkMode();
+        } else {
+          lightMode();
+        }
+
+
+
+</script>
+
+
+</body>
+</html>
