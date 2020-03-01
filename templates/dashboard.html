@@ -38,11 +38,11 @@
     <link href="/static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="/static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
     <link href="/static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
-<!--    <link href="/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
-<!--    <link href="/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
-<!--    <link href="/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
-<!--    <link href="/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
-<!--    <link href="/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
+    <!--    <link href="/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
+    <!--    <link href="/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
+    <!--    <link href="/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
 
     <!-- DashForge CSS -->
     <link rel="stylesheet" href="/static/css/dashforge.css">
@@ -168,6 +168,24 @@
                             <a href="" class="nav-link active">Totals</a>
                             <a href="" class="nav-link">Daily Changes</a>
                         </nav>
+                        <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
+                            <li class="list-inline-item d-flex align-items-center">
+                                <span class="d-block wd-10 ht-10 bg-df-1 rounded mg-r-5"></span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Confirmed Cases</span>
+                            </li>
+                            <li class="list-inline-item d-flex align-items-center mg-l-5">
+                                <span class="d-block wd-10 ht-10 bg-df-2 rounded mg-r-5"></span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Active Infections</span>
+                            </li>
+                            <li class="list-inline-item d-flex align-items-center mg-l-5">
+                                <span class="d-block wd-10 ht-10 bg-df-3 rounded mg-r-5"></span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Recovered</span>
+                            </li>
+                            <li class="list-inline-item d-flex align-items-center mg-l-5">
+                                <span class="d-block wd-10 ht-10 bg-df-3 rounded mg-r-5"></span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Deaths</span>
+                            </li>
+                        </ul>
                         <div class="d-flex mg-t-20 mg-sm-t-0">
                             <div class="btn-group flex-fill">
                                 <button class="btn btn-white btn-xs active">Normal</button>
@@ -178,16 +196,17 @@
                     <div class="card-body pos-relative pd-0">
                         <div class="pos-absolute t-20 l-20 wd-xl-100p z-index-10">
                             <div class="row">
-                                <div class="col-sm-5">
+
+                                <div class="col-sm-5 mg-t-20 mg-sm-t-0">
                                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Mortality
                                         Rate</h6>
                                     <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1%</h3>
-
                                 </div><!-- col -->
-                                <div class="col-sm-5 mg-t-20 mg-sm-t-0">
-                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Resolved
-                                        Cases Mortality Rate</h6>
-                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">22.1%</h3>
+                                <div class="col-sm-5">
+                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">R0
+                                    </h6>
+                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1 - 4.4</h3>
+
                                 </div><!-- col -->
                             </div><!-- row -->
                         </div>
@@ -263,10 +282,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -278,10 +297,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -293,10 +312,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -308,10 +327,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -323,10 +342,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -338,10 +357,10 @@
                                 <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
-                              <td class="tx-medium text-right">2,706 <span
+                                <td class="tx-medium text-right">2,706 <span
                                         class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
                                 </td>
                                 <td class="tx-medium text-right">2,706 <span
@@ -400,120 +419,37 @@
 <script src="/static/js/dashforge.settings.js"></script>
 
 <script>
-              $('#example2').DataTable({
-  responsive: true,
-  paging: false,
-  searching: false,
-  "info": false,
-  language: {
-    searchPlaceholder: 'Search...',
-    sSearch: '',
-    lengthMenu: '_MENU_ items/page',
-  }
-});
-
-      $(function(){
-        'use strict'
-
-        $.plot('#flotChart1', [{
-            data: df3,
-            color: '#e1e5ed',
-            lines: {
-              lineWidth: 1
-            }
-          },{
-            data: df3,
-            color: '#69b2f8',
-            lines: {
-              lineWidth: 1
-            }
-          },{
-            data: df3,
-            color: '#0168fa'
-          }], {
-    			series: {
-            stack: 0,
-    				shadowSize: 0,
-            lines: {
-              show: true,
-              lineWidth: 1.7,
-              fill: true,
-              fillColor: { colors: [ { opacity: 0 }, { opacity: 0.2 } ] }
-            }
-    			},
-          grid: {
-            borderWidth: 0,
-            labelMargin: 5,
-            hoverable: true
-          },
-    			yaxis: {
-            show: true,
-            color: 'rgba(72, 94, 144, .1)',
-            min: 0,
-            max: 160,
-            font: {
-              size: 10,
-              color: '#8392a5'
-            }
-          },
-    			xaxis: {
-            show: true,
-            color: 'rgba(72, 94, 144, .1)',
-            ticks: [[0, '08:00'], [20, '09:00'], [40, '10:00'], [60, '11:00'], [80, '12:00'], [100, '13:00'], [120, '14:00'], [140, '15:00']],
-            font: {
-              size: 10,
-              family: 'Arial, sans-serif',
-              color: '#8392a5'
-            },
-            reserveSpace: false
-          }
-    		});
-
-        function flotOption(min, max) {
-          return {
-            series: {
-              stack: 0,
-              shadowSize: 0,
-              lines: {
-                show: true,
-                lineWidth: 1.5,
-                fill: true,
-                fillColor: { colors: [ { opacity: 0 }, { opacity: 0.2 } ] }
-              }
-            },
-            grid: { borderWidth: 0 },
-            yaxis: { show: false },
-            xaxis: {
-              show: false,
-              min: min,
-              max: max
-            }
-          }
+    $('#example2').DataTable({
+        responsive: true,
+        paging: false,
+        searching: false,
+        "info": false,
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/page',
         }
+    });
 
 
-
-      })
-
-      window.darkMode = function(){
-          $('.btn-white').addClass('btn-dark').removeClass('btn-white');
+    window.darkMode = function () {
+        $('.btn-white').addClass('btn-dark').removeClass('btn-white');
 
 
-        }
+    }
 
-        window.lightMode = function() {
-          $('.btn-dark').addClass('btn-white').removeClass('btn-dark');
+    window.lightMode = function () {
+        $('.btn-dark').addClass('btn-white').removeClass('btn-dark');
 
 
-        }
+    }
 
-        var hasMode = Cookies.get('df-mode');
-        if(hasMode === 'dark') {
-          darkMode();
-        } else {
-          lightMode();
-        }
-
+    var hasMode = Cookies.get('df-mode');
+    if (hasMode === 'dark') {
+        darkMode();
+    } else {
+        lightMode();
+    }
 
 
 </script>

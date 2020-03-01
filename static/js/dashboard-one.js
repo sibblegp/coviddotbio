@@ -36,7 +36,7 @@ $(function(){
     },
     xaxis: {
       show: true,
-      ticks: [[0,''],[8,'Jan'],[20,'Feb'],[32,'Mar'],[44,'Apr'],[56,'May'],[68,'Jun'],[80,'Jul'],[92,'Aug'],[104,'Sep'],[116,'Oct'],[128,'Nov'],[140,'Dec']],
+      tickLength:0,
       color: 'rgba(255,255,255,.2)'
     }
   });
