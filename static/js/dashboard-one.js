@@ -3,13 +3,13 @@ $(function(){
   'use strict'
 
   var flot1 = $.plot('#flotChart', [{
-    data: df3,
+    data: deaths_time_series,
     color: '#69b2f8'
   },{
-    data: df1,
+    data: recovered_time_series,
     color: '#d1e6fa'
   },{
-    data: df2,
+    data: confirmed_time_series,
     color: '#d1e6fa',
     lines: {
       fill: false,
@@ -17,25 +17,30 @@ $(function(){
     }
   }], {
     series: {
-      stack: 0,
-      shadowSize: 0,
-      lines: {
+      "lines":{
         show: true,
-        lineWidth: 0,
-        fill: 1
-      }
+        lineWidth: 1,
+        fill: false,
+    },
+      shadowSize: 0,
+      // lines: {
+      //   show: true,
+      //   lineWidth: 0,
+      //   fill: 1
+      // }
     },
     grid: {
       borderWidth: 0,
       aboveData: true
     },
     yaxis: {
-      show: false,
-      min: 0,
-      max: 350
+      show: true,
+
     },
     xaxis: {
       show: true,
+      // mode: "time",
+      // tickSize: [1, "day"],
       tickLength:0,
       color: 'rgba(255,255,255,.2)'
     }
@@ -123,7 +128,7 @@ $(function(){
   });
 
   $.plot('#flotChart5', [{
-      data: df6,
+      data: recovered_time_series,
       color: '#9db2c6'
     }], {
     series: {
@@ -141,14 +146,14 @@ $(function(){
     },
     yaxis: {
       show: false,
-      min: 0,
-      max: 80
     },
     xaxis: { show: false }
   });
 
+  const dts = deaths_time_series.slice(0,5);
+
   $.plot('#flotChart6', [{
-      data: df4,
+      data: deaths_time_series,
       color: '#9db2c6'
     }], {
     series: {
@@ -166,8 +171,6 @@ $(function(){
     },
     yaxis: {
       show: false,
-      min: 0,
-      max: 60
     },
     xaxis: { show: false }
   });

@@ -111,13 +111,10 @@
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Total Cases</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">85,123</h3>
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.confirmed) }}</h3>
                         <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,207 <i
                                 class="icon ion-md-arrow-up"></i></span> new cases today</p>
                     </div>
-                    <div class="chart-three">
-                        <div id="flotChart3" class="flot-chart ht-30"></div>
-                    </div><!-- chart-three -->
                 </div>
             </div><!-- col -->
             <div class="col-sm-6 col-lg-3 mg-t-10 mg-sm-t-0">
@@ -128,35 +125,27 @@
                         <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,110 <i
                                 class="icon ion-md-arrow-up"></i></span> additional active cases today</p>
                     </div>
-                    <div class="chart-three">
-                        <div id="flotChart4" class="flot-chart ht-30"></div>
-                    </div><!-- chart-three -->
                 </div>
             </div><!-- col -->
             <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Recovered</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">38,643</h3>
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.recovered)}}</h3>
                         <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">2,495 <i
                                 class="icon ion-md-arrow-down"></i></span> people recovered today</p>
                     </div>
-                    <div class="chart-three">
-                        <div id="flotChart5" class="flot-chart ht-30"></div>
-                    </div><!-- chart-three -->
                 </div>
             </div><!-- col -->
             <div class="col-sm-6 col-lg-3 mg-t-10 mg-lg-t-0">
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Deaths</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">2,753</h3>
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.deaths)}}</h3>
                         <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">12 <i
                                 class="icon ion-md-arrow-up"></i></span> deaths today</p>
                     </div>
-                    <div class="chart-three">
-                        <div id="flotChart6" class="flot-chart ht-30"></div>
-                    </div><!-- chart-three -->
+
                 </div>
             </div><!-- col -->
 
@@ -394,6 +383,17 @@
 <!--    </div>-->
 <!--</footer>-->
 
+<script>
+
+    function gd(year, month, day) {
+        return new Date(year, month, day).getTime();
+    }
+
+    const confirmed_time_series = {{ chart_data.confirmed|tojson }}
+    const recovered_time_series = {{ chart_data.recovered|tojson }}
+    const deaths_time_series = {{ chart_data.deaths|tojson }}
+</script>
+
 <script src="/static/lib/jquery/jquery.min.js"></script>
 <script src="/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/static/lib/feather-icons/feather.min.js"></script>
@@ -401,6 +401,7 @@
 <script src="/static/lib/jquery.flot/jquery.flot.js"></script>
 <script src="/static/lib/jquery.flot/jquery.flot.stack.js"></script>
 <script src="/static/lib/jquery.flot/jquery.flot.resize.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
 <script src="/static/lib/chart.js/Chart.bundle.min.js"></script>
 <script src="/static/lib/jqvmap/jquery.vmap.min.js"></script>
 <script src="/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
@@ -419,6 +420,7 @@
 <script src="/static/js/dashforge.settings.js"></script>
 
 <script>
+
     $('#example2').DataTable({
         responsive: true,
         paging: false,
