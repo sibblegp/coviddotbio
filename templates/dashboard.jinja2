@@ -43,23 +43,23 @@
     <meta name="author" content="ThemePixels">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/img/favicon.png">
 
     <title>COVID</title>
 
     <!-- vendor css -->
-    <link href="/static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="/static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
-    <link href="/static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
-    <!--    <link href="/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
-    <!--    <link href="/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
-    <!--    <link href="/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
-    <!--    <link href="/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
-    <!--    <link href="/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
+    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/ionicons/css/ionicons.min.css" rel="stylesheet">
+    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
 
     <!-- DashForge CSS -->
-    <link rel="stylesheet" href="/static/css/dashforge.css">
-    <link rel="stylesheet" href="/static/css/dashforge.dashboard.css">
+    <link rel="stylesheet" href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/css/dashforge.css">
+    <link rel="stylesheet" href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/css/dashforge.dashboard.css">
 </head>
 <body class="page-profile">
 
@@ -112,7 +112,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-style1 mg-b-10">
                         <li class="breadcrumb-item"><a href="#">Covid.bio</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Worldwide</li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ url_data.nav }}</li>
                     </ol>
                 </nav>
                 <h4 class="mg-b-0 tx-spacing--1">Covid-19 Worldwide Statistics Minus China</h4>
@@ -362,30 +362,30 @@
     {{ chart_data.deaths|tojson }}
 </script>
 
-<script src="/static/lib/jquery/jquery.min.js"></script>
-<script src="/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/static/lib/feather-icons/feather.min.js"></script>
-<script src="/static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="/static/lib/jquery.flot/jquery.flot.js"></script>
-<script src="/static/lib/jquery.flot/jquery.flot.stack.js"></script>
-<script src="/static/lib/jquery.flot/jquery.flot.resize.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jquery/jquery.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/feather-icons/feather.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jquery.flot/jquery.flot.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jquery.flot/jquery.flot.stack.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jquery.flot/jquery.flot.resize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
-<script src="/static/lib/chart.js/Chart.bundle.min.js"></script>
-<script src="/static/lib/jqvmap/jquery.vmap.min.js"></script>
-<script src="/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/chart.js/Chart.bundle.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jqvmap/jquery.vmap.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
 
-<script src="/static/lib/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="/static/lib/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
-<script src="/static/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="/static/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
 
-<script src="/static/js/dashforge.js"></script>
-<script src="/static/js/dashforge.sampledata.js"></script>
-<script src="/static/js/dashboard-one.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/js/dashforge.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/js/dashforge.sampledata.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/js/dashboard-one.js"></script>
 
 <!-- append theme customizer -->
-<script src="/static/lib/js-cookie/js.cookie.js"></script>
-<script src="/static/js/dashforge.settings.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/js-cookie/js.cookie.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/js/dashforge.settings.js"></script>
 
 <script>
 

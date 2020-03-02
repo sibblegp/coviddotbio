@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from analytics import Analytics
 from load_data import DataLoader
+import os
 APP = Flask(__name__)
 
 URL_ATTRIBS = {
@@ -21,7 +22,7 @@ def create_js_compatible_date(date):
     return "gd(20" + d[2] + ", " + d[0] + ", " + d[1] +")"
 
 def render_page(url, minus_china):
-
+    url_prefix = os.getenv("URL_PREFIX")
     url_data = URL_ATTRIBS[url]
     print(url_data)
 
@@ -43,7 +44,7 @@ def render_page(url, minus_china):
 
     countries = analytics.countries
     return render_template('dashboard.jinja2', chart_data=chart_data, totals=analytics.totals["totals"],
-                           primary_deltas=primary_deltas, countries=countries, url_data=url_data)
+                           primary_deltas=primary_deltas, countries=countries, url_data=url_data, url_prefix=url_prefix)
 
 @APP.route('/')
 def homepage():
@@ -51,7 +52,7 @@ def homepage():
 
 @APP.route('/minus-china')
 def minus_china():
-    return render_page(url='/minus-china', minus_china = True)
+    return render_page(url='/minus-china', minus_china=True)
 
 @APP.route('/settings.html')
 def settings():
