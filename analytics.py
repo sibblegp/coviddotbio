@@ -23,17 +23,15 @@ class Analytics:
         self.recovered_time_series = self.munge_csv_data(self.recovered_raw)
         self.deaths_time_series = self.munge_csv_data(self.deaths_raw)
         self.countries = self.get_countries_regions()
+
         # print(self.countries)
         self.gather_country_region_data(self.confirmed_time_series, "confirmed")
         self.gather_country_region_data(self.recovered_time_series, "recovered")
         self.gather_country_region_data(self.deaths_time_series, "deaths")
+        self.gather_infected()
         self.totals = {}
         self.set_country_totals()
-        for country in self.countries.keys():
-            print(country)
-            print(self.countries[country]['deltas'])
         print(self.totals)
-        print(len(self.dates))
 
     def set_country_totals(self):
         total_infected = 0
@@ -104,6 +102,9 @@ class Analytics:
 
                         total_delta_confirmed[i] += self.countries[country]["deltas"]["confirmed"][i]
                         total_delta_infected[i] += self.countries[country]["deltas"]["infected"][i]
+                        total_delta_recovered[i] += self.countries[country]["deltas"]["recovered"][i]
+                        total_delta_deaths[i] += self.countries[country]["deltas"]["deaths"][i]
+                        #TODO: Keep going
 
                         # Add to overall dailies
                         total_daily_confirmed[i] += daily_confirmed[i]
@@ -113,9 +114,6 @@ class Analytics:
 
                     if region == country:
                         del self.countries[country]["regions"]
-
-                    print(country)
-                    print(region)
                     # print(self.countries[country]["regions"][region]["deltas"]["confirmed"])
 
                 # Set country totals
@@ -144,6 +142,13 @@ class Analytics:
             "deaths": total_daily_deaths,
         }
 
+        self.totals["deltas"] = {
+            "confirmed": total_delta_confirmed,
+            "infected": total_delta_infected,
+            "recovered": total_delta_recovered,
+            "deaths": total_delta_deaths,
+        }
+
     def munge_csv_data(self, dataset):
         rows = []
         for row in dataset:
@@ -154,13 +159,28 @@ class Analytics:
 
     def gather_country_region_data(self, dataset, name):
         for row in dataset:
-            print(row)
             region = row[0]
             country = row[1]
             if region == '':
                 region = country
             self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
             self.countries[country]["regions"][region]["dailies"][name] = [int(x) for x in row[4:]]
+
+    def gather_infected(self):
+        print("Gathering Infected...")
+        for country_name, country in self.countries.items():
+            print(country_name)
+            if country_name == "Mainland China" and self.ignore_china:
+                pass
+            else:
+                for region_name, region in country["regions"].items():
+                    print(region_name)
+                    region_infected = 0
+                    for i in range(0, self.date_count):
+                        region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][i] - self.countries[country_name]["regions"][region_name]["dailies"]["recovered"][i] - self.countries[country_name]["regions"][region_name]["dailies"]["deaths"][i]
+                        self.countries[country_name]["regions"][region_name]["dailies"]["infected"][i] = region_infected
+                    print(region_infected)
+                    self.countries[country_name]["regions"][region_name]["totals"]["infected"] = region_infected
 
     def get_row_total(self, row):
         return int(row[-1])
@@ -170,7 +190,6 @@ class Analytics:
 
     def get_countries_regions(self):
         countries = {}
-        print(self.confirmed_time_series)
         for row in self.confirmed_time_series:
             country = row[1]
             region = row[0]
@@ -199,7 +218,6 @@ class Analytics:
                     "regions": {}
                 }
 
-            print(region)
             countries[country]["regions"][region] = {
                 "totals": {
                     "confirmed": 0,

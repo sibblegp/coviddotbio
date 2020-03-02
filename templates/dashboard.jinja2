@@ -2,6 +2,19 @@
 <html lang="en">
 <head>
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159542765-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-159542765-1');
+    </script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -62,11 +75,15 @@
         </div><!-- navbar-menu-header -->
         <ul class="nav navbar-menu">
             <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
-            <li class="nav-item active">
-                <a href="" class="nav-link"><i data-feather="pie-chart"></i> Worldwide</a>
+            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
+                <a href="/" class="nav-link"><i data-feather="pie-chart"></i> Worldwide</a>
 
             </li>
-            <li class="nav-item with-sub">
+            <li class="nav-item {% if url_data.slug == 'worldwide-minus-china' %}active{% endif %}">
+                <a href="/minus-china" class="nav-link"><i data-feather="pie-chart"></i> Worldwide Minus China</a>
+
+            </li>
+            {#  <li class="nav-item with-sub">
                 <a href="" class="nav-link"><i data-feather="package"></i> Country Data</a>
                 <ul class="navbar-menu-sub">
                     <li class="nav-sub-item"><a href="app-calendar.html" class="nav-sub-link"><i
@@ -80,7 +97,7 @@
                     <li class="nav-sub-item"><a href="app-mail.html" class="nav-sub-link"><i data-feather="mail"></i>Mail</a>
                     </li>
                 </ul>
-            </li>
+            </li> #}
         </ul>
     </div><!-- navbar-menu-wrapper -->
     <div class="navbar-right">
@@ -98,7 +115,7 @@
                         <li class="breadcrumb-item active" aria-current="page">Worldwide</li>
                     </ol>
                 </nav>
-                <h4 class="mg-b-0 tx-spacing--1">Covid-19 Worldwide Statistics</h4>
+                <h4 class="mg-b-0 tx-spacing--1">Covid-19 Worldwide Statistics Minus China</h4>
             </div>
             <div class="d-none d-md-block">
                 <!--            <button class="btn btn-sm pd-x-15 btn-white btn-uppercase"><i data-feather="mail" class="wd-10 mg-r-5"></i> Email</button>-->
@@ -111,8 +128,9 @@
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Total Cases</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.confirmed) }}</h3>
-                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,207 <i
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{ "{:,.0f}".format(totals.confirmed) }}</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span
+                                class="tx-medium tx-danger">{{ "{:,.0f}".format(primary_deltas.confirmed) }} <i
                                 class="icon ion-md-arrow-up"></i></span> new cases today</p>
                     </div>
                 </div>
@@ -121,9 +139,10 @@
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Active Cases</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">40,293</h3>
-                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">1,110 <i
-                                class="icon ion-md-arrow-up"></i></span> additional active cases today</p>
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{ "{:,.0f}".format(totals.infected) }}</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span
+                                class="tx-medium tx-danger">{{ "{:,.0f}".format(primary_deltas.infected) }} <i
+                                class="icon ion-md-arrow-up"></i></span> more cases today</p>
                     </div>
                 </div>
             </div><!-- col -->
@@ -131,9 +150,10 @@
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Recovered</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.recovered)}}</h3>
-                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">2,495 <i
-                                class="icon ion-md-arrow-down"></i></span> people recovered today</p>
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{ "{:,.0f}".format(totals.recovered) }}</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span
+                                class="tx-medium tx-success">{{ "{:,.0f}".format(primary_deltas.recovered) }} <i
+                                class="icon ion-md-arrow-up"></i></span> people recovered today</p>
                     </div>
                 </div>
             </div><!-- col -->
@@ -141,8 +161,9 @@
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Deaths</h6>
                     <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{"{:,.0f}".format(totals.deaths)}}</h3>
-                        <p class="tx-11 tx-color-03 mg-b-0"><span class="tx-medium tx-danger">12 <i
+                        <h3 class="tx-normal tx-rubik mg-b-0 mg-r-5 lh-1">{{ "{:,.0f}".format(totals.deaths) }}</h3>
+                        <p class="tx-11 tx-color-03 mg-b-0"><span
+                                class="tx-medium tx-danger">{{ "{:,.0f}".format(primary_deltas.deaths) }} <i
                                 class="icon ion-md-arrow-up"></i></span> deaths today</p>
                     </div>
 
@@ -155,16 +176,44 @@
                     <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <nav class="nav nav-line">
                             <a href="" class="nav-link active">Totals</a>
-                            <a href="" class="nav-link">Daily Changes</a>
+                            {# <a href="" class="nav-link">Daily Changes</a> #}
                         </nav>
+
+
+                        {#                        <div class="d-flex mg-t-20 mg-sm-t-0">#}
+                        {#                            <div class="btn-group flex-fill">#}
+                        {#                                <button class="btn btn-white btn-xs active">Normal</button>#}
+                        {#                                <button class="btn btn-white btn-xs">Log</button>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                    </div><!-- card-header -->
+                    <div class="card-body pos-relative pd-0">
+                        {#                        <div class="pos-absolute t-20 l-20 wd-xl-100p z-index-10">#}
+                        {#                            <div class="row">#}
+                        {##}
+                        {#                                <div class="col-sm-5 mg-t-20 mg-sm-t-0">#}
+                        {#                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Mortality#}
+                        {#                                        Rate</h6>#}
+                        {#                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1%</h3>#}
+                        {#                                </div><!-- col -->#}
+                        {#                                <div class="col-sm-5">#}
+                        {#                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">R0#}
+                        {#                                    </h6>#}
+                        {#                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1 - 4.4</h3>#}
+                        {##}
+                        {#                                </div><!-- col -->#}
+                        {#                            </div><!-- row -->#}
+                        {#                        </div>#}
+
+                        <div class="chart-one">
+                            <div id="flotChart" class="flot-chart"></div>
+                        </div><!-- chart-one -->
+                    </div><!-- card-body -->
+                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
                             <li class="list-inline-item d-flex align-items-center">
                                 <span class="d-block wd-10 ht-10 bg-df-1 rounded mg-r-5"></span>
-                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Confirmed Cases</span>
-                            </li>
-                            <li class="list-inline-item d-flex align-items-center mg-l-5">
-                                <span class="d-block wd-10 ht-10 bg-df-2 rounded mg-r-5"></span>
-                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Active Infections</span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Confirmed</span>
                             </li>
                             <li class="list-inline-item d-flex align-items-center mg-l-5">
                                 <span class="d-block wd-10 ht-10 bg-df-3 rounded mg-r-5"></span>
@@ -175,36 +224,7 @@
                                 <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Deaths</span>
                             </li>
                         </ul>
-                        <div class="d-flex mg-t-20 mg-sm-t-0">
-                            <div class="btn-group flex-fill">
-                                <button class="btn btn-white btn-xs active">Normal</button>
-                                <button class="btn btn-white btn-xs">Log</button>
-                            </div>
-                        </div>
                     </div><!-- card-header -->
-                    <div class="card-body pos-relative pd-0">
-                        <div class="pos-absolute t-20 l-20 wd-xl-100p z-index-10">
-                            <div class="row">
-
-                                <div class="col-sm-5 mg-t-20 mg-sm-t-0">
-                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">Mortality
-                                        Rate</h6>
-                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1%</h3>
-                                </div><!-- col -->
-                                <div class="col-sm-5">
-                                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-danger tx-semibold mg-b-10">R0
-                                    </h6>
-                                    <h3 class="tx-normal tx-rubik tx-spacing--2 mg-b-5">2.1 - 4.4</h3>
-
-                                </div><!-- col -->
-                            </div><!-- row -->
-                        </div>
-
-                        <div class="chart-one">
-                            <div id="flotChart" class="flot-chart"></div>
-                        </div><!-- chart-one -->
-                    </div><!-- card-body -->
-
                 </div><!-- card -->
             </div><!-- col -->
 
@@ -260,102 +280,44 @@
                             <tr>
                                 <th>Country</th>
                                 <th class="text-center">Confirmed Cases</th>
-                                <th class="text-center">Active Infections</th>
+                                <th class="text-center">Active Cases</th>
                                 <th class="text-center">Recovered</th>
                                 <th class="text-center">Deaths</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="tx-color-03 tx-normal">China</td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                                <td class="tx-medium text-right">2,706 <span
-                                        class="mg-l-5 tx-10 tx-normal tx-success"><i class="icon ion-md-arrow-up"></i> 1,042</span>
-                                </td>
-                            </tr>
+                            {% for country_name, country in countries.items() %}
+                                <tr>
+                                    <td class="tx-color-03 tx-normal">{{ country_name }}</td>
+                                    <td class="tx-medium text-right"
+                                        data-order="{{ country.totals.confirmed }}">{{ "{:,.0f}".format(country.totals.confirmed) }}
+                                        {% if country.deltas.confirmed[-1] > 0 %}<span
+                                                class="mg-l-5 tx-10 tx-normal tx-danger"><i
+                                                class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.confirmed[-1]) }}</span>{% endif %}
+                                    </td>
+                                    <td class="tx-medium text-right"
+                                        data-order="{{ country.totals.infected }}">{{ "{:,.0f}".format(country.totals.infected) }}
+                                        {% if country.deltas.confirmed[-1] > 0 %}<span
+                                                class="mg-l-5 tx-10 tx-normal tx-danger"><i
+                                                class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.infected[-1]) }}</span> {% endif %}
+                                    </td>
+                                    <td class="tx-medium text-right"
+                                        data-order="{{ country.totals.recovered }}">{{ "{:,.0f}".format(country.totals.recovered) }}
+                                        {% if country.deltas.recovered[-1] > 0 %}
+                                            <span
+                                                    class="mg-l-5 tx-10 tx-normal tx-success"><i
+                                                    class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.recovered[-1]) }}</span> {% endif %}
+                                    </td>
+                                    <td class="tx-medium text-right"
+                                        data-order="{{ country.totals.deaths }}">{{ "{:,.0f}".format(country.totals.deaths) }}
+                                        {% if country.deltas.deaths[-1] > 0 %}
+                                            <span
+                                                    class="mg-l-5 tx-10 tx-normal tx-danger"><i
+                                                    class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.deaths[-1]) }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div><!-- table-responsive -->
@@ -369,19 +331,19 @@
     </div><!-- container -->
 </div><!-- content -->
 
-<!--<footer class="footer">-->
-<!--    <div>-->
-<!--        <span>&copy; 2019 DashForge v1.0.0. </span>-->
-<!--        <span>Created by <a href="http://themepixels.me">ThemePixels</a></span>-->
-<!--    </div>-->
-<!--    <div>-->
-<!--        <nav class="nav">-->
-<!--            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>-->
-<!--            <a href="../../change-log.html" class="nav-link">Change Log</a>-->
-<!--            <a href="https://discordapp.com/invite/RYqkVuw" class="nav-link">Get Help</a>-->
-<!--        </nav>-->
-<!--    </div>-->
-<!--</footer>-->
+<footer class="footer">
+    <div>
+        <span>&copy; 2019 </span>
+        <span>Created by <a href="https://github.com/sibblegp">George Sibble</a></span>
+    </div>
+    {#    <div>#}
+    {#        <nav class="nav">#}
+    {#            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>#}
+    {#            <a href="../../change-log.html" class="nav-link">Change Log</a>#}
+    {#            <a href="https://discordapp.com/invite/RYqkVuw" class="nav-link">Get Help</a>#}
+    {#        </nav>#}
+    {#    </div>#}
+</footer>
 
 <script>
 
@@ -389,9 +351,15 @@
         return new Date(year, month, day).getTime();
     }
 
-    const confirmed_time_series = {{ chart_data.confirmed|tojson }}
-    const recovered_time_series = {{ chart_data.recovered|tojson }}
-    const deaths_time_series = {{ chart_data.deaths|tojson }}
+    const chart_max =
+    {{ totals.confirmed }}
+
+    const confirmed_time_series =
+    {{ chart_data.confirmed|tojson }}
+    const recovered_time_series =
+    {{ chart_data.recovered|tojson }}
+    const deaths_time_series =
+    {{ chart_data.deaths|tojson }}
 </script>
 
 <script src="/static/lib/jquery/jquery.min.js"></script>
@@ -426,6 +394,7 @@
         paging: false,
         searching: false,
         "info": false,
+        "order": [[1, "desc"]],
         language: {
             searchPlaceholder: 'Search...',
             sSearch: '',

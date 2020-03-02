@@ -35,7 +35,7 @@ $(function(){
     },
     yaxis: {
       show: true,
-
+      max: chart_max,
     },
     xaxis: {
       show: true,
