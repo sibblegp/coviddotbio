@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "app_function": "app.APP",
+        "profile_name": "default",
+        "project_name": "coviddotbio",
+        "runtime": "python3.7",
+        "s3_bucket": "zappa-00nge2765",
+        "certificate_arn": "arn:aws:acm:us-east-1:581671006657:certificate/ae895888-ef2b-4f61-ba90-f78de2a0781b",
+        "domain": "covid.bio",
+        "events": [{
+            "function": "jobs.get_files",
+            "expression": "rate(5 minutes)"
+        }]
+    }
+}

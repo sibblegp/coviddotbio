@@ -31,7 +31,7 @@ class Analytics:
         self.gather_infected()
         self.totals = {}
         self.set_country_totals()
-        print(self.totals)
+        # print(self.countries["Mainland China"])
 
     def set_country_totals(self):
         total_infected = 0
@@ -72,7 +72,9 @@ class Analytics:
                     for i in range(0, len(daily_confirmed)):
                         # Set region deltas
                         if i != 0:
-                            self.countries[country]["regions"][region]["deltas"]["confirmed"][i] = self.countries[country]["regions"][region]["dailies"]["confirmed"][i] - self.countries[country]["regions"][region]["dailies"]["confirmed"][i - 1]
+                            self.countries[country]["regions"][region]["deltas"]["confirmed"][i] = \
+                            self.countries[country]["regions"][region]["dailies"]["confirmed"][i] - \
+                            self.countries[country]["regions"][region]["dailies"]["confirmed"][i - 1]
 
                             self.countries[country]["regions"][region]["deltas"]["infected"][i] = \
                                 self.countries[country]["regions"][region]["dailies"]["infected"][i] - \
@@ -94,17 +96,16 @@ class Analytics:
                         self.countries[country]["dailies"]["recovered"][i] += daily_recovered[i]
                         self.countries[country]["dailies"]["deaths"][i] += daily_deaths[i]
 
-                        self.countries[country]["deltas"]["confirmed"][i] += self.countries[country]["regions"][region]["deltas"]["confirmed"][i]
-                        self.countries[country]["deltas"]["infected"][i] += self.countries[country]["regions"][region]["deltas"]["infected"][i]
-                        self.countries[country]["deltas"]["recovered"][i] += self.countries[country]["regions"][region]["deltas"]["recovered"][i]
-                        self.countries[country]["deltas"]["deaths"][i] += self.countries[country]["regions"][region]["deltas"]["deaths"][i]
+                        self.countries[country]["deltas"]["confirmed"][i] += \
+                        self.countries[country]["regions"][region]["deltas"]["confirmed"][i]
+                        self.countries[country]["deltas"]["infected"][i] += \
+                        self.countries[country]["regions"][region]["deltas"]["infected"][i]
+                        self.countries[country]["deltas"]["recovered"][i] += \
+                        self.countries[country]["regions"][region]["deltas"]["recovered"][i]
+                        self.countries[country]["deltas"]["deaths"][i] += \
+                        self.countries[country]["regions"][region]["deltas"]["deaths"][i]
 
-
-                        total_delta_confirmed[i] += self.countries[country]["deltas"]["confirmed"][i]
-                        total_delta_infected[i] += self.countries[country]["deltas"]["infected"][i]
-                        total_delta_recovered[i] += self.countries[country]["deltas"]["recovered"][i]
-                        total_delta_deaths[i] += self.countries[country]["deltas"]["deaths"][i]
-                        #TODO: Keep going
+                        # TODO: Keep going
 
                         # Add to overall dailies
                         total_daily_confirmed[i] += daily_confirmed[i]
@@ -122,11 +123,18 @@ class Analytics:
                 self.countries[country]["totals"]["recovered"] = recovered
                 self.countries[country]["totals"]["deaths"] = deaths
 
+                for i in range(0, len(daily_confirmed)):
+                    total_delta_confirmed[i] += self.countries[country]["deltas"]["confirmed"][i]
+                    total_delta_infected[i] += self.countries[country]["deltas"]["infected"][i]
+                    total_delta_recovered[i] += self.countries[country]["deltas"]["recovered"][i]
+                    total_delta_deaths[i] += self.countries[country]["deltas"]["deaths"][i]
 
             total_confirmed += confirmed
             total_recovered += recovered
             total_infected += infected
             total_deaths += deaths
+
+        print(total_delta_confirmed)
 
         self.totals["totals"] = {
             "confirmed": total_confirmed,
@@ -169,21 +177,27 @@ class Analytics:
     def gather_infected(self):
         print("Gathering Infected...")
         for country_name, country in self.countries.items():
-            print(country_name)
             if country_name == "Mainland China" and self.ignore_china:
                 pass
             else:
                 for region_name, region in country["regions"].items():
-                    print(region_name)
                     region_infected = 0
                     for i in range(0, self.date_count):
-                        region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][i] - self.countries[country_name]["regions"][region_name]["dailies"]["recovered"][i] - self.countries[country_name]["regions"][region_name]["dailies"]["deaths"][i]
+                        region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][
+                                              i] - \
+                                          self.countries[country_name]["regions"][region_name]["dailies"]["recovered"][
+                                              i] - \
+                                          self.countries[country_name]["regions"][region_name]["dailies"]["deaths"][i]
                         self.countries[country_name]["regions"][region_name]["dailies"]["infected"][i] = region_infected
-                    print(region_infected)
                     self.countries[country_name]["regions"][region_name]["totals"]["infected"] = region_infected
 
     def get_row_total(self, row):
-        return int(row[-1])
+        row_total = row[-1]
+        try:
+            int_row_total = int(row[-1])
+        except:
+            int_row_total = 0
+        return int(row_total)
 
     def get_column_total(self, data, column_number):
         return sum([row[column_number] for row in data])

@@ -1,7 +1,7 @@
 
 // Append settings
 $.ajax({
-  url: '/settings.html',
+  url: settings_url,
   success: function(result){
     $('body').append(result);
     feather.replace();
