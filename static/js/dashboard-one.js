@@ -3,13 +3,21 @@ $(function () {
 
     var flot1 = $.plot('#flotChart', [{
         data: deaths_time_series,
-        color: '#0168fa'
+        color: '#0168fa',
+        label: "deaths"
     }, {
         data: recovered_time_series,
-        color: '#d1e6fa'
-    }, {
+        color: '#d1e6fa',
+        label: "recovered"
+    },
+    //  {
+    //     data: confirmed_trend_series,
+    //     color: '#d1e6fa'
+    // },
+        {
         data: confirmed_time_series,
         color: '#69b2f8',
+            label: "confirmed",
         lines: {
             fill: false,
             lineWidth: 1.5
@@ -21,6 +29,11 @@ $(function () {
                 lineWidth: 1,
                 fill: false,
             },
+            "points": {
+                show: true,
+                fill: false,
+                lineWidth: 0
+            },
             shadowSize: 0,
             // lines: {
             //   show: true,
@@ -30,8 +43,10 @@ $(function () {
         },
         grid: {
             borderWidth: 0,
-            aboveData: true
+            hoverable: true,
+
         },
+        legend: { show: false},
         yaxis: {
             show: true,
             max: chart_max,

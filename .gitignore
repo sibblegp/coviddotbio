@@ -131,3 +131,4 @@ dmypy.json
 
 env_covid/
 .idea/
+static/fonts/ibm-plex-sans/.DS_Store

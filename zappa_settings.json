@@ -10,6 +10,7 @@
         "events": [{
             "function": "jobs.get_files",
             "expression": "rate(5 minutes)"
-        }]
+        }],
+        "slim_handler": true
     }
 }

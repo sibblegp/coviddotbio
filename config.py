@@ -5,3 +5,5 @@ JH_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/cs
 CONFIRMED_CASES = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/confirmed.csv"
 RECOVERED_CASES = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/recovered.csv"
 DEATHS = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/deaths.csv"
+
+UPDATE_STRING = 'https://covidbio-covid-data.s3.us-east-2.amazonaws.com/updated_string.txt'

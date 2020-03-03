@@ -125,9 +125,13 @@
                     </ol>
                 </nav>
                 <h4 class="mg-b-0 tx-spacing--1">{{ url_data.title }}</h4>
-                <p class="mg-b-0 tx-spacing--1">Data sourced directly from Johns Hopkins</p>
+
+
             </div>
-            <div class="d-none d-md-block">
+            <div class="d-none d-md-block pd-t-15">
+
+                <p class="mg-b-0 tx-spacing--1 text-right">Data sourced directly from <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins</a></p>
+                <p class="mg-b-0 tx-spacing--1 text-right">{{ update_string }}</p>
                 <!--            <button class="btn btn-sm pd-x-15 btn-white btn-uppercase"><i data-feather="mail" class="wd-10 mg-r-5"></i> Email</button>-->
 
             </div>
@@ -186,19 +190,19 @@
                 <div class="card card-crypto">
                     <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <nav class="nav nav-line">
-                            <a href="" class="nav-link active">Totals</a>
-                            {# <a href="" class="nav-link">Daily Changes</a> #}
+                            <a id="total-btn" href="#" class="nav-link active">Totals</a>
+                            <a id="delta-btn" href="#" class="nav-link">Daily Changes</a>
                         </nav>
 
 
-                        {#                        <div class="d-flex mg-t-20 mg-sm-t-0">#}
-                        {#                            <div class="btn-group flex-fill">#}
-                        {#                                <button class="btn btn-white btn-xs active">Normal</button>#}
-                        {#                                <button class="btn btn-white btn-xs">Log</button>#}
-                        {#                            </div>#}
-                        {#                        </div>#}
+                        <div class="d-flex mg-t-20 mg-sm-t-0">
+                            <div id="normal-log" class="btn-group flex-fill">
+                                <button id="btn-normal" class="btn btn-white btn-xs active">Normal</button>
+                                <button id="btn-log" class="btn btn-white btn-xs">Log</button>
+                            </div>
+                        </div>
                     </div><!-- card-header -->
-                    <div class="card-body pos-relative pd-0">
+                    <div class="card-body pos-relative pd-0 pd-t-10">
                         {#                        <div class="pos-absolute t-20 l-20 wd-xl-100p z-index-10">#}
                         {#                            <div class="row">#}
                         {##}
@@ -218,7 +222,9 @@
 
                         <div class="chart-one">
                             <div id="flotChart" class="flot-chart"></div>
+                            <div id="deltaChart" class="flot-chart"></div>
                         </div><!-- chart-one -->
+
                     </div><!-- card-body -->
                     <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
@@ -239,15 +245,15 @@
                     </div><!-- card-header -->
                 </div><!-- card -->
             </div><!-- col -->
-
-
-            {% if url_data.display_countries %}
+            {% if url_data.sub_levels %}
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <div class="card mg-b-10">
                         <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
                             <div>
-                                <h6 class="mg-b-5">Country Reports</h6>
-                                <p class="tx-13 tx-color-03 mg-b-0">Track your countries numbers</p>
+                                <h6 class="mg-b-5">{% if url_data.display_countries %}Country{% else %}Region{% endif %}
+                                    Reports</h6>
+                                <p class="tx-13 tx-color-03 mg-b-0">{% if url_data.display_countries %}Track your
+                                    countries numbers{% else %}Track Regional Data{% endif %}</p>
                             </div>
                             <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
                             <!--                  <div class="btn-group flex-fill">-->
@@ -291,7 +297,7 @@
                             <table id="example2" class="table table-dashboard mg-b-0">
                                 <thead>
                                 <tr>
-                                    <th>Country</th>
+                                    <th>{% if url_data.display_countries %}Country{% else %}Region{% endif %}</th>
                                     <th class="text-center">Confirmed Cases</th>
                                     <th class="text-center">Active Cases</th>
                                     <th class="text-center">Recovered</th>
@@ -301,8 +307,9 @@
                                 <tbody>
                                 {% for country_name, country in countries.items() %}
                                     <tr>
-                                        <td class="tx-color-03 tx-normal"><a
-                                                href="/{{ country_name.lower().replace(' ', '-') }}">{{ country_name }}</a>
+                                        <td class="tx-color-03 tx-normal">{% if url_data.display_countries %}<a
+                                                href="/{{ country_name.lower().replace(' ', '-') }}">{{ country_name }}</a>{% else %}
+                                            {{ country_name }}{% endif %}
                                         </td>
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.confirmed }}">{{ "{:,.0f}".format(country.totals.confirmed) }}
@@ -416,11 +423,11 @@
                                     <td class="tx-medium text-right"
                                         data-order="{{ chart_data['infected'][i][1] }}">{{ "{:,.0f}".format(chart_data['infected'][i][1]) }}
                                         {% if i > 0 %}
-                                            {% if chart_data['infected'][i][1] > chart_data['infected'][i - 1][1] %}
-                                                <span
-                                                        class="mg-l-5 tx-10 tx-normal tx-danger"><i
-                                                        class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) }}</span>
-                                            {% endif %}
+
+                                            <span
+                                                    class="mg-l-5 tx-10 tx-normal {% if (chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) > 0 %}tx-danger{% else %}tx-success{% endif %}"><i
+                                                    class="icon {% if (chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) > 0 %}ion-md-arrow-down{% else %}ion-md-arrow-up{% endif %}"></i> {{ "{:,.0f}".format(chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) }}</span>
+
                                         {% endif %}
                                     </td>
                                     <td class="tx-medium text-right"
@@ -476,11 +483,10 @@
 
     function gd(date) {
         const d = date.split('/');
-        const year = Number.parseInt('20'.concat(d[2])) - 1;
+        const year = Number.parseInt('20'.concat(d[2]));
         const month = Number.parseInt(d[0]) - 1;
         const day = Number.parseInt(d[1]) - 1
         const nd = new Date(year, month, day).getTime();
-        console.log(nd);
         return nd
     }
 
@@ -490,23 +496,38 @@
 
     const chart_max = {{ totals.confirmed }};
 
-    const tickArray = [{% for date in dates %}gd("{{ date }}"){% if loop.index != dates|length %},{% endif %}{% endfor %}];
+    const tickArray = [{% for date in dates %}gd("{{ date }}"){% if loop.index != dates|length %}, {% endif %}{% endfor %}];
 
     const earliestDate = gd("{{ dates[0] }}");
 
     const latestDate = gd("{{ dates[-1] }}");
 
-    const confirmed_time_series = [{% for data in chart_data.confirmed %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %},{% endif %}{% endfor %}];
-    const recovered_time_series = [{% for data in chart_data.recovered %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %},{% endif %}{% endfor %}];
-    const deaths_time_series = [{% for data in chart_data.deaths %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %},{% endif %}{% endfor %}];
+    const confirmed_time_series = [{% for data in chart_data.confirmed %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+    const recovered_time_series = [{% for data in chart_data.recovered %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+    const deaths_time_series = [{% for data in chart_data.deaths %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+
+    const delta_confirmed_time_series = [{% for data in delta_chart_data.confirmed %}[gd("{{ dates[loop.index0] }}") - 5000000 * 8, {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+    const delta_recovered_time_series = [{% for data in delta_chart_data.recovered %}[gd("{{ dates[loop.index0] }}") - 5000000 * 4, {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+    const delta_deaths_time_series = [{% for data in delta_chart_data.deaths %}[gd("{{ dates[loop.index0] }}") - 5000000, {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+
+    const confirmed_trend_series = [{% for data in trend_chart_data.confirmed %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
+
+    var previousPoint = null;
 </script>
+
+<!-- HTML -->
+<div id="example-section27">
+    <div id="flotcontainer" style="width: 600px;height:200px; text-align: center; margin:0 auto;">
+    </div>
+</div>
+
 
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery/jquery.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/feather-icons/feather.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.js"></script>
-<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.stack.js"></script>
+{#<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.stack.js"></script>#}
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.resize.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/chart.js/Chart.bundle.min.js"></script>
@@ -555,7 +576,6 @@
     });
 
 
-
     window.darkMode = function () {
         $('.btn-white').addClass('btn-dark').removeClass('btn-white');
 
@@ -575,6 +595,245 @@
         lightMode();
     }
 
+    $.fn.UseTooltip = function () {
+        $(this).bind("plothover", function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+
+                    var x = item.datapoint[0];
+                    var y = item.datapoint[1];
+                    var date = new Date(x)
+                    var displayDate = date.toDateString()
+
+                    console.log(x + "," + y)
+
+                    showTooltip(item.pageX, item.pageY,
+                        displayDate + "<br/>" + "<strong>" + y + "</strong> (" + item.series.label + ")");
+                }
+            } else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+    };
+
+
+    function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 20,
+            border: '2px solid #4572A7',
+            padding: '2px',
+            size: '10',
+            'border-radius': '6px 6px 6px 6px',
+            'background-color': '#fff',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+
+    var plot;
+
+    const yaxisLog = {
+        show: true,
+        max: chart_max,
+        mode: 'log',
+        transform: function (v) {
+            return v > 0 ? Math.log(v) / Math.LN10 : null
+        },
+        inverseTransform: function (v) {
+            return Math.pow(10, v)
+        },
+        ticks: [0, 10, 100, 1000, 10000, 100000]
+    };
+
+    const yaxis = {
+        show: true,
+        max: chart_max,
+    };
+
+    var yaxisUse = yaxis;
+
+    $(function () {
+
+        const normalButton = '#btn-normal';
+        const logButton = '#btn-log';
+
+        $(normalButton).click(function () {
+            $(normalButton).addClass('active');
+            $(logButton).removeClass('active');
+            yaxisUse = yaxis;
+            plotChart();
+        });
+
+        $(logButton).click(function () {
+            $(logButton).addClass('active');
+            $(normalButton).removeClass('active');
+            yaxisUse = yaxisLog;
+            plotChart();
+        });
+
+        const normalChart = '#flotChart';
+        const deltaChart = '#deltaChart';
+
+
+        const totalBtn = '#total-btn';
+        const deltaBtn = '#delta-btn';
+        const normalLogButtons = '#normal-log';
+
+        $(totalBtn).click(function (e) {
+            e.preventDefault();
+            $(totalBtn).addClass('active');
+            $(deltaBtn).removeClass('active');
+            $(deltaChart).hide();
+            $(normalChart).show();
+            $(normalLogButtons).show();
+        });
+
+        $(deltaBtn).click(function (e) {
+            e.preventDefault();
+            $(deltaBtn).addClass('active');
+            $(totalBtn).removeClass('active');
+            $(normalChart).hide();
+            $(deltaChart).show();
+            $(normalLogButtons).hide();
+        });
+
+
+        $(".legend").hide();
+
+        function plotChart() {
+            $.plot('#flotChart', [{
+                data: deaths_time_series,
+                color: '#0168fa',
+                label: "deaths"
+            }, {
+                data: recovered_time_series,
+                color: '#d1e6fa',
+                label: "recovered"
+            },
+                //  {
+                //     data: confirmed_trend_series,
+                //     color: '#d1e6fa'
+                // },
+                {
+                    data: confirmed_time_series,
+                    color: '#69b2f8',
+                    label: "confirmed",
+                    lines: {
+                        fill: false,
+                        lineWidth: 1.5
+                    }
+                }], {
+                series: {
+                    "lines": {
+                        show: true,
+                        lineWidth: 1,
+                        fill: false,
+                    },
+                    "points": {
+                        show: true,
+                        fill: false,
+                        lineWidth: 0
+                    },
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                legend: {show: false},
+                yaxis: yaxisUse,
+                xaxis: {
+                    mode: "time",
+
+                }
+            });
+        }
+
+        function plotDeltaChart() {
+            $.plot('#deltaChart', [
+                {
+                    data: delta_deaths_time_series,
+                    color: '#0168fa',
+                    label: "deaths",
+                    bars: {
+                        show: true,
+                        barWidth: 5000000 * 2,
+
+                    },
+                }, {
+                    data: delta_recovered_time_series,
+                    color: '#d1e6fa',
+                    label: "recovered",
+                    bars: {
+                        show: true,
+                        barWidth: 5000000 * 2,
+
+                    },
+                },
+                //  {
+                //     data: confirmed_trend_series,
+                //     color: '#d1e6fa'
+                // },
+                {
+                    data: delta_confirmed_time_series,
+                    color: '#69b2f8',
+                    label: "confirmed",
+                    bars: {
+                        show: true,
+                        barWidth: 5000000 * 2,
+
+                    },
+                }], {
+                series: {
+                    lines: {
+                        show: false,
+                    },
+
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                legend: {show: false},
+                yaxis: {
+                    show: true,
+                },
+                xaxis: {
+                    mode: "time",
+
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.5
+                }
+            });
+        }
+
+        plotChart()
+        plotDeltaChart()
+        $(deltaChart).hide();
+        $("#flotChart").UseTooltip();
+        $("#deltaChart").UseTooltip();
+    });
 
 </script>
 

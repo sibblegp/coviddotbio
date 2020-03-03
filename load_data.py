@@ -15,6 +15,7 @@ class DataLoader:
         self.confirmed_raw = None
         self.recovered_raw = None
         self.deaths_raw = None
+        self.update_string = ''
         self.load_jh_data()
 
     def load_jh_data(self):
@@ -27,10 +28,19 @@ class DataLoader:
             self.recovered = requests.get(config.RECOVERED_CASES)
             self.deaths = requests.get(config.DEATHS)
 
+            # self.confirmed = s3.Object('covidbio-covid-data', "confirmed.csv")
+            # self.recovered = s3.Object('covidbio-covid-data', "recovered.csv")
+            # self.deaths = s3.Object('covidbio-covid-data', "deaths.csv")
+            #
+            # self.confirmed_raw = self.confirmed.get()['Body'].read().decode('utf-8')
+            # self.recovered_raw = self.recovered.get()['Body'].read().decode('utf-8')
+            # self.deaths_raw = self.deaths.get()['Body'].read().decode('utf-8')
 
         self.confirmed_raw = self.convert_to_raw_data(self.confirmed)
         self.recovered_raw = self.convert_to_raw_data(self.recovered)
         self.deaths_raw = self.convert_to_raw_data(self.deaths)
+
+        self.update_string = requests.get(config.UPDATE_STRING).content.decode('utf-8')
 
     def convert_to_raw_data(self, response):
         decoded_content = response.content.decode('utf-8')
