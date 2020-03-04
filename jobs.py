@@ -14,7 +14,7 @@ def get_files():
     data = DataLoader(live=True)
 
     downloaded_confirmed_sha = sha256(data.confirmed.content).hexdigest()
-    if confirmed_file_sha == downloaded_confirmed_sha: #TODO: Make this not equal
+    if confirmed_file_sha != downloaded_confirmed_sha:
 
         s3.Bucket('covidbio-covid-data').put_object(Key='confirmed.csv', Body=data.confirmed.content.decode('utf-8'),
                                                     ACL='public-read')
@@ -23,4 +23,7 @@ def get_files():
         s3.Bucket('covidbio-covid-data').put_object(Key='deaths.csv', Body=data.deaths.content.decode('utf-8'),
                                                     ACL='public-read')
         date_string = datetime.datetime.utcnow().strftime('Last updated on %B %d, %Y at %H:%M UTC')
+        date_stamp = datetime.datetime.utcnow().isoformat().split('.')[0] + 'Z'
+        date_stamp = date_stamp.replace('T', ' ')
         s3.Bucket('covidbio-covid-data').put_object(Key='updated_string.txt', Body=date_string, ACL='public-read')
+        s3.Bucket('covidbio-covid-data').put_object(Key='date_stamp.txt', Body=date_stamp, ACL='public-read')

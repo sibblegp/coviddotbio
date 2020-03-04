@@ -4,6 +4,7 @@ from load_data import DataLoader
 import os
 import numpy
 from regression import exponential_regression
+import config
 
 APP = Flask(__name__)
 
@@ -32,7 +33,7 @@ def create_js_compatible_date(date):
 
 def render_page(url, minus_china, country_slug=None):
     url_prefix = os.getenv("URL_PREFIX")
-
+    menu_data = config.WORLDWIDE_REGIONS
     data = DataLoader()
     analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, minus_china)
 
@@ -47,6 +48,7 @@ def render_page(url, minus_china, country_slug=None):
     }
 
     country_pairs = {}
+    region_map_data = {}
     for pair in country_slug_data:
         country_pairs.update({pair[0]: pair[1]})
     if country_slug:
@@ -108,6 +110,19 @@ def render_page(url, minus_china, country_slug=None):
                 "confirmed": exponential_regression(range(0, analytics.date_count),
                                                     analytics.countries[country]["dailies"]["confirmed"])
             }
+
+            if country_slug == 'us':
+                state_totals = {}
+                for state in analytics.countries[country]["regions"].keys():
+                    if ', ' in state:
+                        state_name = state.split(', ')[1].split(' ')[0].lower()
+                        state_totals[state_name] = 0
+                for state, state_data in analytics.countries[country]["regions"].items():
+                    if ', ' in state:
+                        state_name = state.split(', ')[1].split(' ')[0].lower()
+                        state_totals[state_name] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
+                        region_map_data[state_name] = state_totals[state_name]
+                print(region_map_data)
 
 
             active_increased = True
@@ -174,7 +189,8 @@ def render_page(url, minus_china, country_slug=None):
     return render_template('dashboard.jinja2', chart_data=chart_data, totals=totals,
                            primary_deltas=primary_deltas, countries=countries, url_data=url_data, url_prefix=url_prefix,
                            active_increased=active_increased, dates=dates, trend_chart_data=trend_chart_data,
-                           delta_chart_data=delta_chart_data, update_string=data.update_string)
+                           delta_chart_data=delta_chart_data, update_string=data.update_string,
+                           date_stamp=data.update_date_stamp, menu_data=menu_data, region_map_data=region_map_data)
 
 
 @APP.route('/')

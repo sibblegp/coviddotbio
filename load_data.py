@@ -16,6 +16,7 @@ class DataLoader:
         self.recovered_raw = None
         self.deaths_raw = None
         self.update_string = ''
+        self.update_date_stamp = ''
         self.load_jh_data()
 
     def load_jh_data(self):
@@ -41,6 +42,7 @@ class DataLoader:
         self.deaths_raw = self.convert_to_raw_data(self.deaths)
 
         self.update_string = requests.get(config.UPDATE_STRING).content.decode('utf-8')
+        self.update_date_stamp = requests.get(config.UPDATE_DATE_STAMP).content.decode('utf-8')
 
     def convert_to_raw_data(self, response):
         decoded_content = response.content.decode('utf-8')

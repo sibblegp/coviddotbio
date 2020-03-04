@@ -20,23 +20,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Twitter -->
-    {#    <meta name="twitter:site" content="@themepixels">#}
-    {#    <meta name="twitter:creator" content="@themepixels">#}
-    {#    <meta name="twitter:card" content="summary_large_image">#}
-    {#    <meta name="twitter:title" content="DashForge">#}
-    {#    <meta name="twitter:description" content="Responsive Bootstrap 4 Dashboard Template">#}
-    {#    <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">#}
+{#        <meta name="twitter:site" content="@themepixels">#}
+{#        <meta name="twitter:creator" content="@themepixels">#}
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Covid.bio {{ url_data.title }}">
+        <meta name="twitter:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
+        <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
 
     <!-- Facebook -->
     <meta property="og:url" content="https://covid.bio">
-    <meta property="og:title" content="Covid.bio">
-    <meta property="og:description" content="Covid Worldwide Dashboard">
+    <meta property="og:title" content="Covid.bio {{ url_data.title }}">
+    <meta property="og:description" content=""Detailed day by day tracking of the Coronavirus Outbreak">
 
-    {#    <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">#}
-    {#    <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">#}
-    {#    <meta property="og:image:type" content="image/png">#}
-    {#    <meta property="og:image:width" content="1200">#}
-    {#    <meta property="og:image:height" content="600">#}
+        <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+        <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="600">
 
     <!-- Meta -->
     <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
@@ -46,7 +46,7 @@
     <link rel="shortcut icon" type="image/x-icon"
           href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/img/favicon.png">
 
-    <title>COVID</title>
+    <title>{{ url_data.title }}</title>
 
     <!-- vendor css -->
     <link href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/@fortawesome/fontawesome-free/css/all.min.css"
@@ -69,7 +69,7 @@
 <header class="navbar navbar-header navbar-header-fixed ">
     <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
     <div class="navbar-brand">
-        <a href="../../index.html" class="df-logo">COVID<span>.bio</span></a>
+        <a href="/" class="df-logo">COVID<span>.bio</span></a>
     </div><!-- navbar-brand -->
     <div id="navbarMenu" class="navbar-menu-wrapper">
         <div class="navbar-menu-header">
@@ -88,25 +88,21 @@
                         data-feather="pie-chart"></i> Worldwide Minus China</a>
 
             </li>
-            {#  <li class="nav-item with-sub">
-                <a href="" class="nav-link"><i data-feather="package"></i> Country Data</a>
+            {#
+            {% for continent_name, countries in  menu_data.items() %}
+            <li class="nav-item with-sub">
+                <a href="" class="nav-link"> {{ continent_name }}</a>
                 <ul class="navbar-menu-sub">
                     {% for country in countries|sort %}
-                        <li class="nav-sub-item"><a href="{{ country.lower().replace(' ', '-') }}" class="nav-sub-link"><i
-                            data-feather="calendar"></i>{{ country }}</a></li>
+                        <li class="nav-item with-sub"><a href="{{ country.lower().replace(' ', '-') }}" class="nav-sub-link">{{ country }}</a>
+                        <ul class="navbar-menu-sub"><li class="nav-sub-item with-sub"><a href="{{ country.lower().replace(' ', '-') }}" class="nav-sub-link">{{ country }}</a></li>
+                        </ul>
+                        </li>
                     {% endfor %}
-                    <li class="nav-sub-item"><a href="app-calendar.html" class="nav-sub-link"><i
-                            data-feather="calendar"></i>Calendar</a></li>
-                    <li class="nav-sub-item"><a href="app-chat.html" class="nav-sub-link"><i
-                            data-feather="message-square"></i>Chat</a></li>
-                    <li class="nav-sub-item"><a href="app-contacts.html" class="nav-sub-link"><i
-                            data-feather="users"></i>Contacts</a></li>
-                    <li class="nav-sub-item"><a href="app-file-manager.html" class="nav-sub-link"><i
-                            data-feather="file-text"></i>File Manager</a></li>
-                    <li class="nav-sub-item"><a href="app-mail.html" class="nav-sub-link"><i data-feather="mail"></i>Mail</a>
-                    </li>#}
-        </ul>
-        </li>
+
+                </ul>
+            </li>
+            {% endfor %} #}
         </ul>
     </div><!-- navbar-menu-wrapper -->
     <div class="navbar-right">
@@ -130,8 +126,11 @@
             </div>
             <div class="d-none d-md-block pd-t-15">
 
-                <p class="mg-b-0 tx-spacing--1 text-right">Data sourced directly from <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins</a></p>
-                <p class="mg-b-0 tx-spacing--1 text-right">{{ update_string }}</p>
+                <p class="mg-b-0 tx-spacing--1 text-right">Data sourced directly from <a
+                        href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Johns Hopkins</a></p>
+                <p class="mg-b-0 tx-spacing--1 text-right">Last updated on <span
+                        data-localtime-format="MMMMM d, yyyy">{{ date_stamp }}</span> at <span
+                        data-localtime-format="h:mm a">{{ date_stamp }}</span></p>
                 <!--            <button class="btn btn-sm pd-x-15 btn-white btn-uppercase"><i data-feather="mail" class="wd-10 mg-r-5"></i> Email</button>-->
 
             </div>
@@ -245,6 +244,62 @@
                     </div><!-- card-header -->
                 </div><!-- card -->
             </div><!-- col -->
+
+            {% if url_data.slug == 'us' %}
+                <div class="col-lg-12 col-xl-12 mg-t-10">
+                    <div class="card mg-b-10">
+                        <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
+                            <div>
+                                <h6 class="mg-b-5">Cases by State</h6>
+                                                                <p class="tx-13 tx-color-03 mg-b-0">Track State Totals</p>
+                            </div>
+                            <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
+                            <!--                  <div class="btn-group flex-fill">-->
+                            <!--                    <button class="btn btn-white btn-xs active">Range</button>-->
+                            <!--                    <button class="btn btn-white btn-xs">Period</button>-->
+                            <!--                  </div>-->
+                            <!--                </div>-->
+                        </div><!-- card-header -->
+                        <div class="card-body pd-y-10">
+                            <!--                <div class="d-sm-flex">-->
+                            <!--                  <div class="media">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-teal tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-6">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold tx-nowrap mg-b-5 mg-md-b-8">Gross Earnings</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,958,104</h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-pink tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-5">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Tax Withheld</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$234,769<small>.50</small></h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-primary tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-4">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Net Earnings</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,608,469<small>.50</small></h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                </div>-->
+                        </div><!-- card-body -->
+                        <div data-label="Example" class="df-example">
+                            <div id="vmap" class="ht-300 ht-lg-400"></div>
+                        </div><!-- df-example -->
+                    </div><!-- card -->
+
+
+                </div><!-- col -->
+            {% endif %}
+
             {% if url_data.sub_levels %}
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <div class="card mg-b-10">
@@ -513,6 +568,8 @@
     const confirmed_trend_series = [{% for data in trend_chart_data.confirmed %}[gd("{{ dates[loop.index0] }}"), {{ data[1] }}]{% if loop.index != dates|length %}, {% endif %}{% endfor %}];
 
     var previousPoint = null;
+
+    const region_map_data = {{ region_map_data|tojson }};
 </script>
 
 <!-- HTML -->
@@ -540,12 +597,18 @@
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
 
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/jquery.localtime.min.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.sampledata.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashboard-one.js"></script>
 
 <!-- append theme customizer -->
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/js-cookie/js.cookie.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.settings.js"></script>
+
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/jquery.vmap.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.world.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.canada.js"></script>
 
 <script>
 
@@ -640,7 +703,7 @@
 
     const yaxisLog = {
         show: true,
-        max: chart_max,
+        max: 100000,
         mode: 'log',
         transform: function (v) {
             return v > 0 ? Math.log(v) / Math.LN10 : null
@@ -828,11 +891,77 @@
             });
         }
 
+        function plotMap() {
+            var max = 0,
+                min = 0,
+                cc,
+                startColor = [200, 238, 255],
+                endColor = [0, 100, 145],
+                colors = {},
+                hex;
+
+            //find maximum and minimum values
+            for (cc in region_map_data) {
+                if (parseInt(region_map_data[cc]) > max) {
+                    max = parseInt(region_map_data[cc]);
+                }
+                if (parseInt(region_map_data[cc]) < min) {
+                    min = parseInt(region_map_data[cc]);
+                }
+            }
+
+            //set colors according to values of GDP
+            for (cc in region_map_data) {
+                if (region_map_data[cc] > 0) {
+                    colors[cc] = '#';
+                    for (var i = 0; i < 3; i++) {
+                        hex = Math.round(startColor[i]
+                            + (endColor[i]
+                                - startColor[i])
+                            * (region_map_data[cc] / (max - min))).toString(16);
+
+                        if (hex.length == 1) {
+                            hex = '0' + hex;
+                        }
+
+                        colors[cc] += (hex.length == 1 ? '0' : '') + hex;
+                    }
+                }
+            }
+            console.log(colors);
+            //initialize JQVMap
+            jQuery('#vmap').vectorMap(
+                {
+                    color: '#8392a594',
+                    enableZoom: false,
+                    backgroundColor: '#fff',
+                    borderColor: '#fff',
+                    map: 'usa_en',
+                    colors: colors,
+                    hoverOpacity: 0.7,
+                    hoverColor: false,
+                    onLabelShow: function (event, label, code) {
+                        console.log(label);
+                        console.log(code);
+                        if (region_map_data[code] !== undefined) {
+                            label.append(": ".concat(region_map_data[code]));
+                        }
+                    },
+                    onRegionOver: function (event, code, region) {
+                        console.log(code);
+                        console.log(region);
+                        region = "TESTING";
+                        return region;
+                    }
+                });
+        }
+
         plotChart()
         plotDeltaChart()
         $(deltaChart).hide();
         $("#flotChart").UseTooltip();
         $("#deltaChart").UseTooltip();
+        {% if url_data.slug == 'us' %}plotMap(){% endif %}
     });
 
 </script>

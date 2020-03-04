@@ -169,6 +169,8 @@ class Analytics:
         for row in dataset:
             region = row[0]
             country = row[1]
+            if row[-1] == '':
+                del row[-1]
             if region == '':
                 region = country
             self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
@@ -197,7 +199,11 @@ class Analytics:
             int_row_total = int(row[-1])
         except:
             int_row_total = 0
-        return int(row_total)
+        try:
+            return int(row_total)
+        except:
+            print(row)
+            return 0
 
     def get_column_total(self, data, column_number):
         return sum([row[column_number] for row in data])
