@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159542765-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-159542765-1');
+    </script>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Twitter -->
+    {#        <meta name="twitter:site" content="@themepixels">#}
+    {#        <meta name="twitter:creator" content="@themepixels">#}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Covid.bio {{ url_data.title }}">
+    <meta name="twitter:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
+    <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+
+    <!-- Facebook -->
+    <meta property="og:url" content="https://covid.bio">
+    <meta property="og:title" content="Covid.bio {{ url_data.title }}">
+    <meta property="og:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
+
+    <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- Meta -->
+    <meta name="description" content="Up to date and accurate statistics on Coronavirus">
+    <meta name="author" content="George Sibble">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon"
+          href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/img/favicon.png">
+
+    <title>COVID</title>
+
+    <!-- vendor css -->
+    <link href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/@fortawesome/fontawesome-free/css/all.min.css"
+          rel="stylesheet">
+    <link href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/ionicons/css/ionicons.min.css"
+          rel="stylesheet">
+    <link href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/jqvmap.min.css" rel="stylesheet">
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/typicons.font/typicons.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/prismjs/themes/prism-vs.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-dt/css/jquery.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/datatables.net-responsive-dt/css/responsive.dataTables.min.css" rel="stylesheet">-->
+    <!--    <link href="{% if url_prefix %}/{{ url_prefix}}{% endif %}/static/lib/select2/css/select2.min.css" rel="stylesheet">-->
+
+    <!-- DashForge CSS -->
+    <link rel="stylesheet" href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/css/dashforge.css">
+    <link rel="stylesheet" href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/css/dashforge.dashboard.css">
+</head>
+<body class="page-profile">
+
+<header class="navbar navbar-header navbar-header-fixed ">
+    <a href="" id="mainMenuOpen" class="burger-menu"><i data-feather="menu"></i></a>
+    <div class="navbar-brand">
+        <a href="/" class="df-logo">COVID<span>.bio</span></a>
+    </div><!-- navbar-brand -->
+    <div id="navbarMenu" class="navbar-menu-wrapper">
+        <div class="navbar-menu-header">
+            <a href="/" class="df-logo">COVID<span>.bio</span></a>
+            <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
+        </div><!-- navbar-menu-header -->
+        <ul class="nav navbar-menu">
+            <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
+            <li class="nav-item {% if url_data.slug == 'worldwide-minus' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/" class="nav-link"><i
+                        data-feather="pie-chart"></i> Worldwide (minus China)</a>
+
+            </li>
+            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/with-china" class="nav-link"><i
+                        data-feather="pie-chart"></i> Worldwide</a>
+
+            </li>
+
+
+
+            <li class="nav-item with-sub">
+                <a href="" class="nav-link">Top Countries</a>
+                <ul class="navbar-menu-sub">
+                    {% for country in country_menu|sort %}
+                        <li class="nav-sub-item"><a href="{{ country.lower().replace(' ', '-') }}"
+                                                    class="nav-sub-link">{{ country }}</a>
+
+
+                        </li>
+                    {% endfor %}
+
+                </ul>
+            </li>
+            <li class="nav-item {% if url_data.slug == 'growth' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/growth" class="nav-link"><i
+                        data-feather="pie-chart"></i> Growth (New!)</a>
+
+            </li>
+        </ul>
+    </div><!-- navbar-menu-wrapper -->
+    <div class="navbar-right">
+
+    </div><!-- navbar-right -->
+</header><!-- navbar -->
+
+<div class="content content-fixed">
+    <div class="container pd-x-0 pd-lg-x-10 pd-xl-x-0">
+        <div class="d-sm-flex align-items-center justify-content-between mg-b-20 mg-lg-b-25 mg-xl-b-30">
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-style1 mg-b-10">
+                        <li class="breadcrumb-item"><a href="#">Covid.bio</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ url_data.nav }}</li>
+                    </ol>
+                </nav>
+                <h4 class="mg-b-0 tx-spacing--1">{{ url_data.title }}</h4>
+
+
+            </div>
+            <div class="d-none d-md-block pd-t-15">
+
+                <p class="mg-b-0 tx-spacing--1 text-right">Data sourced directly from <a
+                        href="https://github.com/CSSEGISandData/COVID-19" target="_blank">Johns Hopkins</a></p>
+                <p class="mg-b-0 tx-spacing--1 text-right">Last updated on <span
+                        data-localtime-format="MMMMM d, yyyy">{{ date_stamp }}</span> at <span
+                        data-localtime-format="h:mm a">{{ date_stamp }}</span></p>
+                <!--            <button class="btn btn-sm pd-x-15 btn-white btn-uppercase"><i data-feather="mail" class="wd-10 mg-r-5"></i> Email</button>-->
+
+            </div>
+        </div>
+
+
+        <div class="row row-xs">
+            {% if url_data.slug == 'worldwide-minus' or url_data.slug == 'us' %}
+                <div class="col-lg-12 col-xl-12 mg-b-10">
+                    <div class="card card-body">
+                        <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">New Api!</h6>
+                        <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                            <p>If you are interested in doing your own analytics or making your own dashboard, feel free to hit <a href="https://api.covid.bio/" target="_blank">Our New Api!</a></p>
+                            <p>The API is free. We just ask for you to cite us as your source of data.</p>
+                        </div>
+                    </div>
+                </div><!-- col -->
+            {% endif %}
+
+
+            <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="card card-crypto">
+                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
+                        <nav class="nav nav-line">
+                            <a id="line-btn" href="#" class="nav-link active">Line Chart</a>
+                            <a id="bar-btn" href="#" class="nav-link">Bar Chart</a>
+                        </nav>
+
+
+
+                    </div><!-- card-header -->
+                    <div class="card-body pos-relative pd-0 pd-t-10">
+
+                        <div class="chart-one">
+                            <div id="lineChart" class="flot-chart"></div>
+                            <div id="barChart" class="flot-chart"></div>
+                        </div><!-- chart-one -->
+
+                    </div><!-- card-body -->
+                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
+                        <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
+                            <li class="list-inline-item d-flex align-items-center mg-l-5">
+                                <span class="d-block wd-10 ht-10 bg-df-2 rounded mg-r-5"></span>
+                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Confirmed</span>
+                            </li>
+                        </ul>
+                    </div><!-- card-header -->
+                </div><!-- card -->
+            </div><!-- col -->
+
+        </div><!-- row -->
+    </div><!-- container -->
+</div><!-- content -->
+
+<footer class="footer">
+    <div>
+        <span>&copy; 2019 </span>
+        <span>Created by <a href="https://github.com/sibblegp">George Sibble</a></span>
+    </div>
+    {#    <div>#}
+    {#        <nav class="nav">#}
+    {#            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>#}
+    {#            <a href="../../change-log.html" class="nav-link">Change Log</a>#}
+    {#            <a href="https://discordapp.com/invite/RYqkVuw" class="nav-link">Get Help</a>#}
+    {#        </nav>#}
+    {#    </div>#}
+</footer>
+
+<script>
+
+    function gd(date) {
+        const d = date.split('/');
+        const year = Number.parseInt('20'.concat(d[2]));
+        const month = Number.parseInt(d[0]) - 1;
+        const day = Number.parseInt(d[1]) - 1
+        const nd = new Date(year, month, day).getTime();
+        return nd
+    }
+
+    const legendContainer = document.getElementById("legendContainer");
+
+    const country_growths = {{ country_growths|tojson }}
+
+    const settings_url = '{% if url_prefix %}/{{ url_prefix}}{% endif %}/settings.html';
+
+    const url_prefix = '{% if url_prefix %}/{{ url_prefix}}{% endif %}';
+
+    const chart_max = {{ chart_max }};
+
+    const tickArray = {{ day_indexes|tojson }};
+
+
+    var previousPoint = null;
+
+</script>
+
+<!-- HTML -->
+<div id="example-section27">
+    <div id="flotcontainer" style="width: 600px;height:200px; text-align: center; margin:0 auto;">
+    </div>
+</div>
+
+
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery/jquery.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/feather-icons/feather.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.js"></script>
+{#<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.stack.js"></script>#}
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jquery.flot/jquery.flot.resize.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flot/0.8.3/jquery.flot.time.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/chart.js/Chart.bundle.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/jquery.vmap.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/datatables.net-dt/js/dataTables.dataTables.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/datatables.net-responsive-dt/js/responsive.dataTables.min.js"></script>
+
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/jquery.localtime.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.sampledata.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashboard-one.js"></script>
+
+<!-- append theme customizer -->
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/js-cookie/js.cookie.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/dashforge.settings.js"></script>
+
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/jquery.vmap.min.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.world.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.canada.js"></script>
+
+<script>
+
+    const colors = ["#d1e6fa", "#0168FA",  "#6E5EEC", "#454555", "#000000", "#E90042", "#D33FA4"];
+
+    window.darkMode = function () {
+        $('.btn-white').addClass('btn-dark').removeClass('btn-white');
+
+
+    }
+
+    window.lightMode = function () {
+        $('.btn-dark').addClass('btn-white').removeClass('btn-dark');
+
+
+    }
+
+    var hasMode = Cookies.get('df-mode');
+    if (hasMode === 'dark') {
+        darkMode();
+    } else {
+        lightMode();
+    }
+
+    $.fn.UseTooltip = function () {
+        $(this).bind("plothover", function (event, pos, item) {
+            if (item) {
+                if (previousPoint != item.dataIndex) {
+                    previousPoint = item.dataIndex;
+
+                    $("#tooltip").remove();
+
+                    var x = item.datapoint[0];
+                    var y = item.datapoint[1];
+                    var date = new Date(x)
+                    var displayDate = date.toDateString()
+
+                    console.log(x + "," + y)
+
+                    showTooltip(item.pageX, item.pageY,
+                        displayDate + "<br/>" + "<strong>" + y + "</strong> (" + item.series.label + ")");
+                }
+            } else {
+                $("#tooltip").remove();
+                previousPoint = null;
+            }
+        });
+    };
+
+
+    function showTooltip(x, y, contents) {
+        $('<div id="tooltip">' + contents + '</div>').css({
+            position: 'absolute',
+            display: 'none',
+            top: y + 5,
+            left: x + 20,
+            border: '2px solid #4572A7',
+            padding: '2px',
+            size: '10',
+            'border-radius': '6px 6px 6px 6px',
+            'background-color': '#fff',
+            opacity: 0.80
+        }).appendTo("body").fadeIn(200);
+    }
+
+    var plot;
+
+    const yaxisLog = {
+        show: true,
+        max: 50000,
+        mode: 'log',
+        transform: function (v) {
+            return v > 0 ? Math.log(v) / Math.LN10 : null
+        },
+        inverseTransform: function (v) {
+            return Math.pow(10, v)
+        },
+        ticks: [0, 10, 100, 1000, 10000, 100000, 1000000]
+    };
+
+    const yaxis = {
+        show: true,
+        //max: chart_max,
+    };
+
+    var yaxisUse = yaxis;
+
+    $(function () {
+
+        const normalButton = '#btn-normal';
+        const logButton = '#btn-log';
+
+        $(normalButton).click(function () {
+            $(normalButton).addClass('active');
+            $(logButton).removeClass('active');
+            yaxisUse = yaxis;
+            plotChart();
+        });
+
+        $(logButton).click(function () {
+            $(logButton).addClass('active');
+            $(normalButton).removeClass('active');
+            yaxisUse = yaxisLog;
+            plotChart();
+        });
+
+        const normalChart = '#lineChart';
+        const deltaChart = '#barChart';
+
+
+        const totalBtn = '#line-btn';
+        const deltaBtn = '#bar-btn';
+        const normalLogButtons = '#normal-log';
+
+        $(totalBtn).click(function (e) {
+            e.preventDefault();
+            $(totalBtn).addClass('active');
+            $(deltaBtn).removeClass('active');
+            $(deltaChart).hide();
+            $(normalChart).show();
+            $(normalLogButtons).show();
+        });
+
+        $(deltaBtn).click(function (e) {
+            e.preventDefault();
+            $(deltaBtn).addClass('active');
+            $(totalBtn).removeClass('active');
+            $(normalChart).hide();
+            $(deltaChart).show();
+            $(normalLogButtons).hide();
+        });
+
+        var legendSettings = {
+				position: "nw",
+                show: true,
+                //noColumns: 2
+            };
+        //$(".legend").hide();
+
+        function plotLineChart() {
+            $.plot('#lineChart', [
+                {% for country_name, growth_series in country_growths.items() %}
+                    {
+                        data: {{ growth_series|tojson }},
+                        color: colors[{{ loop.index0 }}],
+                        label: "{{ country_name }}"
+                    },
+                {% endfor %}
+            ], {
+                series: {
+                    "lines": {
+                        show: true,
+                        lineWidth: 1,
+                        fill: false,
+                    },
+                    "points": {
+                        show: true,
+                        fill: false,
+                        lineWidth: 0
+                    },
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                yaxis: yaxisUse,
+                xaxis: {
+                    //mode: "time",
+                    tickSize: 1,
+                    tickDecimals: 0
+                },
+                legend: legendSettings,
+            });
+        }
+
+        function plotBarChart() {
+            $.plot('#barChart', [
+                {% for country_name, growth_series in country_growth_bars.items() %}
+                    {
+                        data: {{ growth_series|tojson }},
+                        color: colors[{{ loop.index0 }}],
+                        label: "{{ country_name }}",
+                        bars: {
+                            show: true,
+                            barWidth: {{ bar_width }},
+
+                        }
+                    },
+                {% endfor %}
+            ], {
+                series: {
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                legend: legendSettings,
+                yaxis: yaxisUse,
+                xaxis: {
+                    //mode: "time",
+                    tickSize: 1,
+                    tickDecimals: 0
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.25 //{{ chart_steps }}
+                }
+            });
+        }
+
+
+        plotLineChart();
+        plotBarChart();
+        //plotDeltaChart()
+        $("#lineChart").UseTooltip();
+        $("#barChart").UseTooltip();
+        $(deltaChart).hide();
+
+    });
+
+</script>
+
+
+</body>
+</html>

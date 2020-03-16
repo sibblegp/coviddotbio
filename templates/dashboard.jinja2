@@ -103,7 +103,11 @@
 
                 </ul>
             </li>
+            <li class="nav-item {% if url_data.slug == 'growth' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/growth" class="nav-link"><i
+                        data-feather="pie-chart"></i> Growth (New!)</a>
 
+            </li>
         </ul>
     </div><!-- navbar-menu-wrapper -->
     <div class="navbar-right">

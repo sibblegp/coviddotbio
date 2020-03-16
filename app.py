@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, jsonify
 from analytics import Analytics
 from load_data import DataLoader
 import os
@@ -29,6 +29,13 @@ URL_ATTRIBS = {
         "title": "Covid-19 Worldwide Statistics (minus China)",
         "display_countries": True,
         "sub_levels": True
+    },
+    "/growth": {
+        "nav": "Growth",
+        "slug": "growth",
+        "title": "Covid-19 Growth Comarison",
+        "display_countries": False,
+        "sub_levels": False
     }
 }
 
@@ -239,3 +246,63 @@ def settings():
 def render_country(country_slug):
     slug = country_slug.lower().replace(' ', '-')
     return render_page(url=None, minus_china=False, country_slug=slug)
+
+@APP.route('/growth')
+def compare_countries():
+    url_data = URL_ATTRIBS['/growth']
+    data = DataLoader()
+    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, True)
+    country_menu = config.COUNTRIES_MENU
+    country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
+    country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
+    just_over_1000_countries = {}
+    for country_name, country in analytics.countries.items():
+        if country['totals']['confirmed'] > 2000:
+            update = {
+                country_name: country,
+            }
+            just_over_1000_countries.update(update)
+
+    print(just_over_1000_countries)
+    country_growths = {}
+    max_days = 0
+    chart_max = 25000
+
+    country_count_over_1000 = 0
+
+    for country_name, country in just_over_1000_countries.items():
+        country_confirmed = []
+        for day_count in country['dailies']['confirmed']:
+            if day_count >= 100:
+                country_confirmed.append(day_count)
+                if day_count > chart_max:
+                    chart_max = day_count
+        if len(country_confirmed) > max_days:
+            max_days = len(country_confirmed)
+        if len(country_confirmed) > 0:
+            country['growth'] = country_confirmed
+            growths_update = {
+                country_name: list(zip(range(0, len(country_confirmed)), country_confirmed))
+            }
+            country_growths.update(growths_update)
+
+    final_data = []
+
+    chart_steps = 0.50 / len(just_over_1000_countries.keys())
+    country_growth_bars = {}
+    index = 0
+    country_count = len(country_growths.keys())
+    for country_name, country_growth in country_growths.items():
+        updated_growth = []
+        for day in country_growth:
+            day_value = day[0] + 0.25 + (chart_steps * index)
+            updated_growth.append((day_value, day[1]))
+        country_growth_bars[country_name] = updated_growth
+        index += 1
+
+
+    day_indexes = list(range(0, max_days))
+    return render_template('compare.jinja2', country_growths=country_growths, url_data=url_data,
+                           country_menu=country_menu, day_indexes=day_indexes, chart_max=chart_max,
+                           date_stamp=data.update_date_stamp, country_growth_bars=country_growth_bars,
+                           bar_width=chart_steps)
