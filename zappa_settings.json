@@ -12,5 +12,17 @@
             "expression": "rate(5 minutes)"
         }],
         "slim_handler": true
+    },
+    "api": {
+        "app_function": "api.API",
+        "profile_name": "default",
+        "project_name": "coviddotbioapi",
+        "runtime": "python3.7",
+        "certificate_arn": "arn:aws:acm:us-east-1:581671006657:certificate/5f9c8049-7b89-414c-b135-fee17050f1b8",
+        "domain": "api.covid.bio",
+        "events": [{
+            "function": "jobs.publish_analytics",
+            "expression": "rate(30 minutes)"
+        }]
     }
 }

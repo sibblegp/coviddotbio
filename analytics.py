@@ -1,3 +1,6 @@
+from config import STATE_MAP
+import datetime
+
 class Analytics:
 
     def __init__(self, confirmed_raw, recovered_raw, deaths_raw, ignore_china=False):
@@ -31,7 +34,14 @@ class Analytics:
         self.gather_infected()
         self.totals = {}
         self.set_country_totals()
-        # print(self.countries["Mainland China"])
+        # print(self.countries["China"])
+
+    def convert_region(self, region, country):
+        new_region = region
+        region_parts = region.split(", ")
+        if len(region_parts) > 1 and country == 'US':
+            new_region = STATE_MAP[region_parts[1].strip()]
+        return new_region
 
     def set_country_totals(self):
         total_infected = 0
@@ -53,11 +63,12 @@ class Analytics:
             confirmed = 0
             recovered = 0
             deaths = 0
-            if country == "Mainland China" and self.ignore_china:
+            if country == "China" and self.ignore_china:
                 pass
             else:
                 for region in self.countries[country]["regions"].keys():
                     # Add to overall totals
+                    adjusted_region = self.convert_region(region, country)
                     infected += self.countries[country]["regions"][region]["totals"]["infected"]
                     confirmed += self.countries[country]["regions"][region]["totals"]["confirmed"]
                     recovered += self.countries[country]["regions"][region]["totals"]["recovered"]
@@ -113,10 +124,9 @@ class Analytics:
                         total_daily_recovered[i] += daily_recovered[i]
                         total_daily_deaths[i] += daily_deaths[i]
 
-                    if region == country:
-                        del self.countries[country]["regions"]
+                    # if region == country:
+                    #     del self.countries[country]["regions"][region]
                     # print(self.countries[country]["regions"][region]["deltas"]["confirmed"])
-
                 # Set country totals
                 self.countries[country]["totals"]["infected"] = infected
                 self.countries[country]["totals"]["confirmed"] = confirmed
@@ -134,7 +144,12 @@ class Analytics:
             total_infected += infected
             total_deaths += deaths
 
-        print(total_delta_confirmed)
+        new_us_regions = {}
+        for region in self.countries['US']["regions"].keys():
+            if len(region.split(", ")) == 1:
+                new_us_regions.update({region: self.countries['US']["regions"][region]})
+        #print(new_us_regions)
+        self.countries['US']["regions"] = new_us_regions
 
         self.totals["totals"] = {
             "confirmed": total_confirmed,
@@ -173,13 +188,18 @@ class Analytics:
                 del row[-1]
             if region == '':
                 region = country
-            self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
-            self.countries[country]["regions"][region]["dailies"][name] = [int(x) for x in row[4:]]
+            exclude = False
+            # if country == 'US' and ", " in region:
+            #     region = self.convert_region(region)
+            if not exclude:
+                self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
+                self.countries[country]["regions"][region]["dailies"][name] = [int(x) for x in row[4:]]
+                
 
     def gather_infected(self):
         print("Gathering Infected...")
         for country_name, country in self.countries.items():
-            if country_name == "Mainland China" and self.ignore_china:
+            if country_name == "China" and self.ignore_china:
                 pass
             else:
                 for region_name, region in country["regions"].items():
@@ -215,8 +235,32 @@ class Analytics:
             region = row[0]
             if region == '':
                 region = country
-            if country not in countries:
-                countries[country] = {
+            exclude = False
+            if not exclude:
+                if country not in countries:
+                    countries[country] = {
+                        "totals": {
+                            "confirmed": 0,
+                            "infected": 0,
+                            "recovered": 0,
+                            "deaths": 0,
+                        },
+                        "dailies": {
+                            "confirmed": [0 for x in range(0, self.date_count)],
+                            "infected": [0 for x in range(0, self.date_count)],
+                            "recovered": [0 for x in range(0, self.date_count)],
+                            "deaths": [0 for x in range(0, self.date_count)],
+                        },
+                        "deltas": {
+                            "confirmed": [0 for x in range(0, self.date_count)],
+                            "infected": [0 for x in range(0, self.date_count)],
+                            "recovered": [0 for x in range(0, self.date_count)],
+                            "deaths": [0 for x in range(0, self.date_count)],
+                        },
+                        "regions": {}
+                    }
+
+                countries[country]["regions"][region] = {
                     "totals": {
                         "confirmed": 0,
                         "infected": 0,
@@ -227,7 +271,7 @@ class Analytics:
                         "confirmed": [0 for x in range(0, self.date_count)],
                         "infected": [0 for x in range(0, self.date_count)],
                         "recovered": [0 for x in range(0, self.date_count)],
-                        "deaths": [0 for x in range(0, self.date_count)],
+                        "deaths": [0 for x in range(0, self.date_count)]
                     },
                     "deltas": {
                         "confirmed": [0 for x in range(0, self.date_count)],
@@ -235,32 +279,24 @@ class Analytics:
                         "recovered": [0 for x in range(0, self.date_count)],
                         "deaths": [0 for x in range(0, self.date_count)],
                     },
-                    "regions": {}
                 }
-
-            countries[country]["regions"][region] = {
-                "totals": {
-                    "confirmed": 0,
-                    "infected": 0,
-                    "recovered": 0,
-                    "deaths": 0,
-                },
-                "dailies": {
-                    "confirmed": [0 for x in range(0, self.date_count)],
-                    "infected": [0 for x in range(0, self.date_count)],
-                    "recovered": [0 for x in range(0, self.date_count)],
-                    "deaths": [0 for x in range(0, self.date_count)]
-                },
-                "deltas": {
-                    "confirmed": [0 for x in range(0, self.date_count)],
-                    "infected": [0 for x in range(0, self.date_count)],
-                    "recovered": [0 for x in range(0, self.date_count)],
-                    "deaths": [0 for x in range(0, self.date_count)],
-                },
-            }
 
         return countries
 
     @property
     def date_count(self):
         return len(self.dates)
+
+    def dates_real(self):
+        new_dates = []
+        for date in self.dates:
+            new_dates.append(datetime.datetime.strptime(date, "%m/%d/%y"))
+        return new_dates
+
+    def dates_iso(self):
+        new_dates = []
+        for date in self.dates_real():
+            date_stamp = date.isoformat().split('.')[0] + 'Z'
+            date_stamp = date_stamp.replace('T', ' ')
+            new_dates.append(date_stamp)
+        return new_dates

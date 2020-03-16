@@ -10,21 +10,42 @@ APP = Flask(__name__)
 
 URL_ATTRIBS = {
     "/": {
-        "nav": "Worldwide",
+        "nav": "Worldwide Without China",
+        "slug": "worldwide-minus",
+        "title": "Covid-19 Worldwide Statistics (minus China)",
+        "display_countries": True,
+        "sub_levels": True
+    },
+    "/with-china": {
+        "nav": "Worldwide including China",
         "slug": "worldwide",
-        "title": "Covid-19 Worldwide Statistics",
+        "title": "Covid-19 Worldwide (including China) Statistics",
         "display_countries": True,
         "sub_levels": True
     },
     "/minus-china": {
         "nav": "Worldwide Minus China",
         "slug": "worldwide-minus-china",
-        "title": "Covid-19 Worldwide Statistics Minus China",
+        "title": "Covid-19 Worldwide Statistics (minus China)",
         "display_countries": True,
         "sub_levels": True
     }
 }
 
+def convert_state_to_code(state):
+    inv_map = {v: k for k, v in config.STATE_MAP.items()}
+    if state in inv_map.keys():
+        return inv_map[state].lower()
+    else:
+        return state.lower()
+
+@APP.errorhandler(400)
+def resource_not_found(e):
+    return 'Our data provider is having issues and we will update as soon as possible', 400
+
+@APP.errorhandler(500)
+def resource_not_found(e):
+    return 'Our data provider is having issues and we will update as soon as possible', 400
 
 def create_js_compatible_date(date):
     d = date.split('/')
@@ -36,7 +57,7 @@ def render_page(url, minus_china, country_slug=None):
     menu_data = config.WORLDWIDE_REGIONS
     data = DataLoader()
     analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, minus_china)
-
+    country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
 
@@ -114,14 +135,14 @@ def render_page(url, minus_china, country_slug=None):
             if country_slug == 'us':
                 state_totals = {}
                 for state in analytics.countries[country]["regions"].keys():
-                    if ', ' in state:
-                        state_name = state.split(', ')[1].split(' ')[0].lower()
-                        state_totals[state_name] = 0
+                    if ', ' not in state:
+                        adjusted_state = convert_state_to_code(state)
+                        state_totals[adjusted_state] = 0
                 for state, state_data in analytics.countries[country]["regions"].items():
-                    if ', ' in state:
-                        state_name = state.split(', ')[1].split(' ')[0].lower()
-                        state_totals[state_name] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
-                        region_map_data[state_name] = state_totals[state_name]
+                    if ', ' not in state:
+                        adjusted_state = convert_state_to_code(state)
+                        state_totals[adjusted_state] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
+                        region_map_data[adjusted_state] = state_totals[adjusted_state]
                 print(region_map_data)
 
 
@@ -133,6 +154,7 @@ def render_page(url, minus_china, country_slug=None):
     else:
         url_data = URL_ATTRIBS[url]
         totals = analytics.totals["totals"]
+        print(analytics.totals["totals"])
         chart_data = {
             "confirmed": list(zip(analytics.dates, analytics.totals["dailies"]["confirmed"])),
             "recovered": list(zip(analytics.dates, analytics.totals["dailies"]["recovered"])),
@@ -190,17 +212,22 @@ def render_page(url, minus_china, country_slug=None):
                            primary_deltas=primary_deltas, countries=countries, url_data=url_data, url_prefix=url_prefix,
                            active_increased=active_increased, dates=dates, trend_chart_data=trend_chart_data,
                            delta_chart_data=delta_chart_data, update_string=data.update_string,
-                           date_stamp=data.update_date_stamp, menu_data=menu_data, region_map_data=region_map_data)
+                           date_stamp=data.update_date_stamp, menu_data=menu_data, region_map_data=region_map_data,
+                           country_menu=country_menu)
 
 
 @APP.route('/')
 def homepage():
-    return render_page(url='/', minus_china=False)
+    return render_page(url='/', minus_china=True)
 
 
 @APP.route('/minus-china')
 def minus_china():
     return render_page(url='/minus-china', minus_china=True)
+
+@APP.route('/with-china')
+def with_china():
+    return render_page(url='/with-china', minus_china=False)
 
 
 @APP.route('/settings.html')

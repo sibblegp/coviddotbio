@@ -20,33 +20,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Twitter -->
-{#        <meta name="twitter:site" content="@themepixels">#}
-{#        <meta name="twitter:creator" content="@themepixels">#}
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="Covid.bio {{ url_data.title }}">
-        <meta name="twitter:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
-        <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    {#        <meta name="twitter:site" content="@themepixels">#}
+    {#        <meta name="twitter:creator" content="@themepixels">#}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Covid.bio {{ url_data.title }}">
+    <meta name="twitter:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
+    <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
 
     <!-- Facebook -->
     <meta property="og:url" content="https://covid.bio">
     <meta property="og:title" content="Covid.bio {{ url_data.title }}">
-    <meta property="og:description" content=""Detailed day by day tracking of the Coronavirus Outbreak">
+    <meta property="og:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
 
-        <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
-        <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
-        <meta property="og:image:type" content="image/png">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="600">
+    <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/dashforge/img/dashforge-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
 
     <!-- Meta -->
-    <meta name="description" content="Responsive Bootstrap 4 Dashboard Template">
-    <meta name="author" content="ThemePixels">
+    <meta name="description" content="Up to date and accurate statistics on Coronavirus">
+    <meta name="author" content="George Sibble">
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon"
           href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/img/favicon.png">
 
-    <title>{{ url_data.title }}</title>
+    <title>COVID</title>
 
     <!-- vendor css -->
     <link href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/@fortawesome/fontawesome-free/css/all.min.css"
@@ -73,36 +73,37 @@
     </div><!-- navbar-brand -->
     <div id="navbarMenu" class="navbar-menu-wrapper">
         <div class="navbar-menu-header">
-            <a href="../../index.html" class="df-logo">dash<span>forge</span></a>
+            <a href="/" class="df-logo">COVID<span>.bio</span></a>
             <a id="mainMenuClose" href=""><i data-feather="x"></i></a>
         </div><!-- navbar-menu-header -->
         <ul class="nav navbar-menu">
             <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
-            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
+            <li class="nav-item {% if url_data.slug == 'worldwide-minus' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/" class="nav-link"><i
+                        data-feather="pie-chart"></i> Worldwide (minus China)</a>
+
+            </li>
+            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/with-china" class="nav-link"><i
                         data-feather="pie-chart"></i> Worldwide</a>
 
             </li>
-            <li class="nav-item {% if url_data.slug == 'worldwide-minus-china' %}active{% endif %}">
-                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/minus-china" class="nav-link"><i
-                        data-feather="pie-chart"></i> Worldwide Minus China</a>
 
-            </li>
-            {#
-            {% for continent_name, countries in  menu_data.items() %}
+
             <li class="nav-item with-sub">
-                <a href="" class="nav-link"> {{ continent_name }}</a>
+                <a href="" class="nav-link">Top Countries</a>
                 <ul class="navbar-menu-sub">
-                    {% for country in countries|sort %}
-                        <li class="nav-item with-sub"><a href="{{ country.lower().replace(' ', '-') }}" class="nav-sub-link">{{ country }}</a>
-                        <ul class="navbar-menu-sub"><li class="nav-sub-item with-sub"><a href="{{ country.lower().replace(' ', '-') }}" class="nav-sub-link">{{ country }}</a></li>
-                        </ul>
+                    {% for country in country_menu|sort %}
+                        <li class="nav-sub-item"><a href="{{ country.lower().replace(' ', '-') }}"
+                                                    class="nav-sub-link">{{ country }}</a>
+
+
                         </li>
                     {% endfor %}
 
                 </ul>
             </li>
-            {% endfor %} #}
+
         </ul>
     </div><!-- navbar-menu-wrapper -->
     <div class="navbar-right">
@@ -136,7 +137,19 @@
             </div>
         </div>
 
+
         <div class="row row-xs">
+            {% if url_data.slug == 'worldwide-minus' or url_data.slug == 'us' %}
+                <div class="col-lg-12 col-xl-12 mg-b-10">
+                    <div class="card card-body">
+                        <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">New Api!</h6>
+                        <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                            <p>If you are interested in doing your own analytics or making your own dashboard, feel free to hit <a href="https://api.covid.bio/" target="_blank">Our New Api!</a></p>
+                            <p>The API is free. We just ask for you to cite us as your source of data.</p>
+                        </div>
+                    </div>
+                </div><!-- col -->
+            {% endif %}
             <div class="col-sm-6 col-lg-3">
                 <div class="card card-body">
                     <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Total Cases</h6>
@@ -244,14 +257,63 @@
                     </div><!-- card-header -->
                 </div><!-- card -->
             </div><!-- col -->
-
+           {#  <div class="col-md-6 col-lg-4 col-xl-3 mg-t-10 mg-lg-t-0">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="mg-b-0">Sessions By Channel</h6>
+                    </div><!-- card-header -->
+                    <div class="card-body pd-lg-25">
+                        <div class="chart-seven">
+                            <canvas id="chartDonut"></canvas>
+                        </div>
+                    </div><!-- card-body -->
+                    <div class="card-footer pd-20">
+                        <div class="row">
+                            <div class="col-6">
+                                <p class="tx-10 tx-uppercase tx-medium tx-color-03 tx-spacing-1 tx-nowrap mg-b-5">
+                                    Organic Search</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="wd-10 ht-10 rounded-circle bg-pink mg-r-5"></div>
+                                    <h5 class="tx-normal tx-rubik mg-b-0">1,320 <small class="tx-color-04">25%</small>
+                                    </h5>
+                                </div>
+                            </div><!-- col -->
+                            <div class="col-6">
+                                <p class="tx-10 tx-uppercase tx-medium tx-color-03 tx-spacing-1 mg-b-5">Email</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="wd-10 ht-10 rounded-circle bg-primary mg-r-5"></div>
+                                    <h5 class="tx-normal tx-rubik mg-b-0">987 <small class="tx-color-04">20%</small>
+                                    </h5>
+                                </div>
+                            </div><!-- col -->
+                            <div class="col-6 mg-t-20">
+                                <p class="tx-10 tx-uppercase tx-medium tx-color-03 tx-spacing-1 mg-b-5">Referrral</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="wd-10 ht-10 rounded-circle bg-teal mg-r-5"></div>
+                                    <h5 class="tx-normal tx-rubik mg-b-0">2,010 <small class="tx-color-04">30%</small>
+                                    </h5>
+                                </div>
+                            </div><!-- col -->
+                            <div class="col-6 mg-t-20">
+                                <p class="tx-10 tx-uppercase tx-medium tx-color-03 tx-spacing-1 mg-b-5">Social Media</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="wd-10 ht-10 rounded-circle bg-orange mg-r-5"></div>
+                                    <h5 class="tx-normal tx-rubik mg-b-0">1,054 <small class="tx-color-04">25%</small>
+                                    </h5>
+                                </div>
+                            </div><!-- col -->
+                        </div><!-- row -->
+                    </div><!-- card-footer -->
+                </div><!-- card -->
+            </div>
+            #}
             {% if url_data.slug == 'us' %}
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <div class="card mg-b-10">
                         <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
                             <div>
                                 <h6 class="mg-b-5">Cases by State</h6>
-                                                                <p class="tx-13 tx-color-03 mg-b-0">Track State Totals</p>
+                                <p class="tx-13 tx-color-03 mg-b-0">Track State Totals</p>
                             </div>
                             <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
                             <!--                  <div class="btn-group flex-fill">-->
@@ -375,8 +437,8 @@
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.infected }}">{{ "{:,.0f}".format(country.totals.infected) }}
                                             {% if country.deltas.confirmed[-1] > 0 %}<span
-                                                    class="mg-l-5 tx-10 tx-normal tx-danger"><i
-                                                    class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.infected[-1]) }}</span> {% endif %}
+                                                    class="mg-l-5 tx-10 tx-normal {% if country.deltas.infected[-1] > country.deltas.infected[0] %}tx-danger{% else %}tx-success{% endif %}"><i
+                                                    class="icon {% if country.deltas.infected[-1] > country.deltas.infected[0] %}ion-md-arrow-up{% else %}ion-md-arrow-down{% endif %}"></i> {{ "{:,.0f}".format(country.deltas.infected[-1]) }}</span> {% endif %}
                                         </td>
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.recovered }}">{{ "{:,.0f}".format(country.totals.recovered) }}
@@ -481,7 +543,7 @@
 
                                             <span
                                                     class="mg-l-5 tx-10 tx-normal {% if (chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) > 0 %}tx-danger{% else %}tx-success{% endif %}"><i
-                                                    class="icon {% if (chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) > 0 %}ion-md-arrow-down{% else %}ion-md-arrow-up{% endif %}"></i> {{ "{:,.0f}".format(chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) }}</span>
+                                                    class="icon {% if (chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) < 0 %}ion-md-arrow-down{% else %}ion-md-arrow-up{% endif %}"></i> {{ "{:,.0f}".format(chart_data['infected'][i][1] - chart_data['infected'][i - 1][1]) }}</span>
 
                                         {% endif %}
                                     </td>
@@ -703,7 +765,7 @@
 
     const yaxisLog = {
         show: true,
-        max: 100000,
+        max: 150000,
         mode: 'log',
         transform: function (v) {
             return v > 0 ? Math.log(v) / Math.LN10 : null
@@ -711,7 +773,7 @@
         inverseTransform: function (v) {
             return Math.pow(10, v)
         },
-        ticks: [0, 10, 100, 1000, 10000, 100000]
+        ticks: [0, 10, 100, 1000, 10000, 100000, 1000000]
     };
 
     const yaxis = {
@@ -779,10 +841,10 @@
                 color: '#d1e6fa',
                 label: "recovered"
             },
-                //  {
-                //     data: confirmed_trend_series,
-                //     color: '#d1e6fa'
-                // },
+                {# {#}
+                {#    data: confirmed_trend_series,#}
+                {#    color: '#d1e6fa'#}
+                {#,#}
                 {
                     data: confirmed_time_series,
                     color: '#69b2f8',
