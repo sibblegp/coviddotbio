@@ -32,7 +32,7 @@ WORLDWIDE_REGIONS = {
     'South America': ['Ecuador', 'Brazil']
 }
 
-COUNTRIES_MENU = ["US", "Iran", "South Korea", "Japan", "Italy", "Germany", "France", "Switzerland", "UK"]
+COUNTRIES_MENU = ["US", "Iran", "Italy", "Germany", "France", "Spain", "Switzerland", "UK"]
 
 STATE_MAP = {
     "AL": "Alabama",
@@ -96,4 +96,13 @@ STATE_MAP = {
     "WI": "Wisconsin",
     "WY": "Wyoming",
     'U.S.': "United States"
+}
+
+MANUAL_DAY_COUNTS = {
+    'US': 119,
+    'France': 140,
+    'Germany': 131,
+    'Spain': 83,
+    'Iran': 94,
+    'Switzerland': 115
 }

@@ -5,6 +5,7 @@ import os
 import numpy
 from regression import exponential_regression
 import config
+from operator import add
 
 APP = Flask(__name__)
 
@@ -33,7 +34,7 @@ URL_ATTRIBS = {
     "/growth": {
         "nav": "Growth",
         "slug": "growth",
-        "title": "Covid-19 Growth Comarison",
+        "title": "Covid-19 Growth Comparison",
         "display_countries": False,
         "sub_levels": False
     }
@@ -257,14 +258,15 @@ def compare_countries():
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
     just_over_1000_countries = {}
     for country_name, country in analytics.countries.items():
-        if country['totals']['confirmed'] > 2000:
+        if country_name not in ['Korea, South', 'Iran'] and country['totals']['confirmed'] > 4000:
             update = {
                 country_name: country,
             }
             just_over_1000_countries.update(update)
 
-    print(just_over_1000_countries)
+    country_count = len(just_over_1000_countries.keys())
     country_growths = {}
+    raw_country_growths = {}
     max_days = 0
     chart_max = 25000
 
@@ -272,8 +274,12 @@ def compare_countries():
 
     for country_name, country in just_over_1000_countries.items():
         country_confirmed = []
+        count_to = 100
+        if country_name in config.MANUAL_DAY_COUNTS.keys():
+            count_to = config.MANUAL_DAY_COUNTS[country_name]
         for day_count in country['dailies']['confirmed']:
-            if day_count >= 100:
+
+            if day_count >= count_to:
                 country_confirmed.append(day_count)
                 if day_count > chart_max:
                     chart_max = day_count
@@ -285,13 +291,16 @@ def compare_countries():
                 country_name: list(zip(range(0, len(country_confirmed)), country_confirmed))
             }
             country_growths.update(growths_update)
+            raw_country_growths_update = {
+                country_name: country_confirmed
+            }
+            raw_country_growths.update(raw_country_growths_update)
 
     final_data = []
 
     chart_steps = 0.50 / len(just_over_1000_countries.keys())
     country_growth_bars = {}
     index = 0
-    country_count = len(country_growths.keys())
     for country_name, country_growth in country_growths.items():
         updated_growth = []
         for day in country_growth:
@@ -300,9 +309,29 @@ def compare_countries():
         country_growth_bars[country_name] = updated_growth
         index += 1
 
-
+    totals = [0 for x in range(0, max_days)]
+    for country_name, country_growth in country_growths.items():
+        totals_list = [x[1] / country_count for x in country_growth]
+        totals = list(map(add, totals, totals_list))
+    # print(totals) #TODO: This is wrong (/ country_count). It thinks X figures are always added together. In reality, it may be 1-2
+    # return jsonify(totals)
     day_indexes = list(range(0, max_days))
+
+    final_date = analytics.dates[-1]
+    start_dates = {}
+    for country_name, country_growth in country_growths.items():
+        date_offset = 0 - len(country_growth)
+        start_date = analytics.dates[date_offset]
+        update = {
+            country_name: {
+                'start_date': start_date,
+                'offset': abs(date_offset)
+            }
+        }
+        start_dates.update(update)
+    sorted_countries = sorted(country_growths, key=lambda key: len(country_growths[key]), reverse=True)
     return render_template('compare.jinja2', country_growths=country_growths, url_data=url_data,
                            country_menu=country_menu, day_indexes=day_indexes, chart_max=chart_max,
                            date_stamp=data.update_date_stamp, country_growth_bars=country_growth_bars,
-                           bar_width=chart_steps)
+                           bar_width=chart_steps, start_dates=start_dates, sorted_countries=sorted_countries,
+                           raw_country_growths=raw_country_growths)

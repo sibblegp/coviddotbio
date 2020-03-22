@@ -23,13 +23,13 @@
     {#        <meta name="twitter:site" content="@themepixels">#}
     {#        <meta name="twitter:creator" content="@themepixels">#}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Covid.bio {{ url_data.title }}">
+    <meta name="twitter:title" content="Covid.bio">
     <meta name="twitter:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
     <meta name="twitter:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
 
     <!-- Facebook -->
     <meta property="og:url" content="https://covid.bio">
-    <meta property="og:title" content="Covid.bio {{ url_data.title }}">
+    <meta property="og:title" content="Covid.bio">
     <meta property="og:description" content="Detailed day by day tracking of the Coronavirus Outbreak">
 
     <meta property="og:image" content="http://themepixels.me/dashforge/img/dashforge-social.png">
@@ -90,7 +90,6 @@
             </li>
 
 
-
             <li class="nav-item with-sub">
                 <a href="" class="nav-link">Top Countries</a>
                 <ul class="navbar-menu-sub">
@@ -144,12 +143,13 @@
 
 
         <div class="row row-xs">
-            {% if url_data.slug == 'worldwide-minus' or url_data.slug == 'us' %}
+            {% if url_data.slug == 'worldwide-minus' or url_data.slug == 'us' or url_slug == 'growth' %}
                 <div class="col-lg-12 col-xl-12 mg-b-10">
                     <div class="card card-body">
                         <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">New Api!</h6>
                         <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                            <p>If you are interested in doing your own analytics or making your own dashboard, feel free to hit <a href="https://api.covid.bio/" target="_blank">Our New Api!</a></p>
+                            <p>If you are interested in doing your own analytics or making your own dashboard, feel free
+                                to hit <a href="https://api.covid.bio/" target="_blank">Our New Api!</a></p>
                             <p>The API is free. We just ask for you to cite us as your source of data.</p>
                         </div>
                     </div>
@@ -161,41 +161,122 @@
                 <div class="card card-crypto">
                     <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <nav class="nav nav-line">
-                            <a id="line-btn" href="#" class="nav-link active">Line Chart</a>
-                            <a id="bar-btn" href="#" class="nav-link">Bar Chart</a>
-                        </nav>
+                            <a id="bar-btn" href="#" class="nav-link active">Bar Chart</a>
+                            <a id="line-btn" href="#" class="nav-link">Line Chart</a>
 
+                        </nav>
 
 
                     </div><!-- card-header -->
                     <div class="card-body pos-relative pd-0 pd-t-10">
 
                         <div class="chart-one">
-                            <div id="lineChart" class="flot-chart"></div>
                             <div id="barChart" class="flot-chart"></div>
+                            <div id="lineChart" class="flot-chart"></div>
+
                         </div><!-- chart-one -->
 
                     </div><!-- card-body -->
-                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
-                        <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
-                            <li class="list-inline-item d-flex align-items-center mg-l-5">
-                                <span class="d-block wd-10 ht-10 bg-df-2 rounded mg-r-5"></span>
-                                <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Confirmed</span>
-                            </li>
-                        </ul>
-                    </div><!-- card-header -->
+
                 </div><!-- card -->
             </div><!-- col -->
+            <div class="col-lg-12 col-xl-12 mg-t-10">
+                    <div class="card mg-b-10">
+                        <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
+                            <div>
+                                <h6 class="mg-b-5">Growth Raw Data</h6>
+                                <p class="tx-13 tx-color-03 mg-b-0">Track your countries growth compared to Italy</p>
+                            </div>
+                            <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
+                            <!--                  <div class="btn-group flex-fill">-->
+                            <!--                    <button class="btn btn-white btn-xs active">Range</button>-->
+                            <!--                    <button class="btn btn-white btn-xs">Period</button>-->
+                            <!--                  </div>-->
+                            <!--                </div>-->
+                        </div><!-- card-header -->
+                        <div class="card-body pd-y-10">
+                            <!--                <div class="d-sm-flex">-->
+                            <!--                  <div class="media">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-teal tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-6">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold tx-nowrap mg-b-5 mg-md-b-8">Gross Earnings</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,958,104</h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-pink tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-5">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Tax Withheld</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$234,769<small>.50</small></h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                  <div class="media mg-t-20 mg-sm-t-0 mg-sm-l-15 mg-md-l-40">-->
+                            <!--                    <div class="wd-40 wd-md-50 ht-40 ht-md-50 bg-primary tx-white mg-r-10 mg-md-r-10 d-flex align-items-center justify-content-center rounded op-4">-->
+                            <!--                      <i data-feather="bar-chart-2"></i>-->
+                            <!--                    </div>-->
+                            <!--                    <div class="media-body">-->
+                            <!--                      <h6 class="tx-sans tx-uppercase tx-10 tx-spacing-1 tx-color-03 tx-semibold mg-b-5 mg-md-b-8">Net Earnings</h6>-->
+                            <!--                      <h4 class="tx-20 tx-sm-18 tx-md-24 tx-normal tx-rubik mg-b-0">$1,608,469<small>.50</small></h4>-->
+                            <!--                    </div>-->
+                            <!--                  </div>-->
+                            <!--                </div>-->
+                        </div><!-- card-body -->
+                        <div class="table-responsive pd-l-10 pd-lg-l-20 pd-r-10 pd-lg-r-20 pd-b-10 pd-lg-b-20">
+                            <table id="example2" class="table table-dashboard mg-b-0">
+                                <thead>
+                                <tr>
+                                    <th>Days In</th>
+                                    {% for country_name in sorted_countries %}
+                                    <th class="text-center">{{ country_name }} ({{ start_dates[country_name]['start_date'] }})</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for day in range(0, day_indexes|length) %}
 
+
+                                    <tr>
+                                    <td class="tx-color-03 tx-normal">{{ day }}</td>
+                                    {% for country_name in sorted_countries %}
+                                        <td class="tx-color-03 tx-normal" {% if raw_country_growths[country_name][day] %}data-hist="{{ raw_country_growths[country_name][day] }}{% endif %}">{{ raw_country_growths[country_name][day] }}
+                                        </td>
+                                    {% endfor %}
+                                    <tr></tr>
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div><!-- table-responsive -->
+                    </div><!-- card -->
+
+
+                </div><!-- col -->
+                        <div class="col-lg-12 col-xl-12 mg-t-10">
+                <div class="card card-body">
+                    <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Notes</h6>
+                    <div class="d-flex d-lg-block d-xl-flex align-items-end">
+                        <p>This data is normalized to match Italy's trend. The start dates for each country are as
+                            follows:</p>
+                        {% for country, stats in start_dates.items() %}
+                            <p>{{ country }}: {{ stats['start_date'] }} ({{ stats['offset'] }} day ago)</p>
+                        {% endfor %}
+                        <p>Iranian data was determined to be inaccurate.</p>
+                    </div>
+                </div>
+            </div>
         </div><!-- row -->
     </div><!-- container -->
 </div><!-- content -->
 
 <footer class="footer">
-    <div>
-        <span>&copy; 2019 </span>
-        <span>Created by <a href="https://github.com/sibblegp">George Sibble</a></span>
-    </div>
+    <p class="pull-left" style="margin-bottom: 0;"><a href="https://api.covid.bio/" target="_blank">Access Our Api</a> </p>
+      <div class="pull-right">
+          <p class="pull-left" style="margin-bottom: 0;">©<a href="https://github.com/sibblegp" target="_blank"> George Sibble</a> 2020</p>
+      </div>
     {#    <div>#}
     {#        <nav class="nav">#}
     {#            <a href="https://themeforest.net/licenses/standard" class="nav-link">Licenses</a>#}
@@ -218,7 +299,7 @@
 
     const legendContainer = document.getElementById("legendContainer");
 
-    const country_growths = {{ country_growths|tojson }}
+    const country_growths = {{ country_growths|tojson }};
 
     const settings_url = '{% if url_prefix %}/{{ url_prefix}}{% endif %}/settings.html';
 
@@ -271,9 +352,44 @@
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.usa.js"></script>
 <script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/lib/jqvmap/maps/jquery.vmap.canada.js"></script>
 
+<script src="{% if url_prefix %}/{{ url_prefix }}{% endif %}/static/js/jquery.hottie.js"></script>
+
 <script>
 
-    const colors = ["#d1e6fa", "#0168FA",  "#6E5EEC", "#454555", "#000000", "#E90042", "#D33FA4"];
+    const colors = ["#69b2f8", "#0168FA", "#6E5EEC", "#454555", "#4C8683", "#E90042", "#D33FA4",
+        "#69b2f8", "#0168FA", "#6E5EEC", "#454555", "#4C8683", "#E90042", "#D33FA4"];
+
+    /*$('#example2').DataTable({
+        responsive: false,
+        paging: false,
+        searching: false,
+        "info": false,
+        "order": [[0, "desc"]],
+        language: {
+            searchPlaceholder: 'Search...',
+            sSearch: '',
+            lengthMenu: '_MENU_ items/page',
+        }
+    });*/
+
+    $("#example2 td").not(":nth-child(1)").hottie({
+    colorArray : [
+        "#FFFFFF", // highest value
+        "#FC9835",
+
+        "#F8696B"// lowest value
+        // add as many colors as you like...
+    ],
+    readValue : function(e) {
+      const value = $(e).attr("data-hist");
+      console.log(value);
+      if(value === undefined) {
+          return 0;
+      }
+      return $(e).attr("data-hist");
+    }
+
+});
 
     window.darkMode = function () {
         $('.btn-white').addClass('btn-dark').removeClass('btn-white');
@@ -376,12 +492,12 @@
             plotChart();
         });
 
-        const normalChart = '#lineChart';
-        const deltaChart = '#barChart';
+        const normalChart = '#barChart';
+        const deltaChart = '#lineChart';
 
 
-        const totalBtn = '#line-btn';
-        const deltaBtn = '#bar-btn';
+        const totalBtn = '#bar-btn';
+        const deltaBtn = '#line-btn';
         const normalLogButtons = '#normal-log';
 
         $(totalBtn).click(function (e) {
@@ -403,17 +519,18 @@
         });
 
         var legendSettings = {
-				position: "nw",
-                show: true,
-                //noColumns: 2
-            };
+            position: "nw",
+            show: true,
+            //noColumns: 2
+        };
+
         //$(".legend").hide();
 
         function plotLineChart() {
             $.plot('#lineChart', [
-                {% for country_name, growth_series in country_growths.items() %}
+                {% for country_name in sorted_countries %}
                     {
-                        data: {{ growth_series|tojson }},
+                        data: country_growths['{{ country_name }}'],
                         color: colors[{{ loop.index0 }}],
                         label: "{{ country_name }}"
                     },
@@ -454,9 +571,10 @@
 
         function plotBarChart() {
             $.plot('#barChart', [
-                {% for country_name, growth_series in country_growth_bars.items() %}
+                {% for country_name in sorted_countries %}
+{#                {% for country_name, growth_series in country_growth_bars.items() %}#}
                     {
-                        data: {{ growth_series|tojson }},
+                        data: {{ country_growth_bars[country_name]|tojson }},
                         color: colors[{{ loop.index0 }}],
                         label: "{{ country_name }}",
                         bars: {
@@ -501,6 +619,19 @@
         $("#lineChart").UseTooltip();
         $("#barChart").UseTooltip();
         $(deltaChart).hide();
+
+        function toDelta() {
+            $(deltaBtn).addClass('active');
+            $(totalBtn).removeClass('active');
+        }
+
+        function toTotal() {
+            $(totalBtn).addClass('active');
+            $(deltaBtn).removeClass('active');
+        }
+
+        //$(normalChart).show().delay(3000).fadeOut(1000).delay(5000).fadeIn(1000, toTotal);
+        //$(deltaChart).hide().delay(4000).fadeIn(1000, toDelta).delay(3000).fadeOut(1000);
 
     });
 

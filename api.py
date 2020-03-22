@@ -15,6 +15,7 @@ def homepage():
     response = API.response_class(
         response=analytics.content.decode('utf-8'),
         status=200,
-        mimetype='application/json'
+        mimetype='application/json',
+        headers={"Access-Control-Allow-Origin": "*"}
     )
     return response
