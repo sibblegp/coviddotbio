@@ -94,7 +94,7 @@
                 <a href="" class="nav-link">Top Countries</a>
                 <ul class="navbar-menu-sub">
                     {% for country in country_menu|sort %}
-                        <li class="nav-sub-item"><a href="{{ country.lower().replace(' ', '-') }}"
+                        <li class="nav-sub-item"><a href="/{{ country.lower().replace(' ', '-') }}"
                                                     class="nav-sub-link">{{ country }}</a>
 
 
@@ -102,6 +102,25 @@
                     {% endfor %}
 
                 </ul>
+            </li>
+            <li class="nav-item with-sub">
+                <a href="" class="nav-link">US States</a>
+                    <div class="navbar-menu-sub">
+                        <div class="d-lg-flex">
+                                {% for state in states|sort %}
+                        {% if loop.index0 == 0 %}<ul>{% endif %}
+                        <li class="nav-sub-item"><a href="/us/{{ state.lower().replace(' ', '-') }}"
+                                                    class="nav-sub-link">{{ state }}</a>
+
+
+                        </li>
+                        {% if loop.index0 == 27 %}</ul><ul>{% endif %}
+                    {% endfor %}
+                </ul>
+                        </div>
+                    </div>
+
+
             </li>
             <li class="nav-item {% if url_data.slug == 'growth' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/growth" class="nav-link"><i
@@ -123,6 +142,7 @@
                     <ol class="breadcrumb breadcrumb-style1 mg-b-10">
                         <li class="breadcrumb-item"><a href="#">Covid.bio</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ url_data.nav }}</li>
+                        {% if url_data.sub_nav %}<li class="breadcrumb-item active" aria-current="page">{{ url_data.sub_nav }}</li>{% endif %}
                     </ol>
                 </nav>
                 <h4 class="mg-b-0 tx-spacing--1">{{ url_data.title }}</h4>
@@ -146,10 +166,9 @@
             {% if url_data.slug == 'worldwide-minus' or url_data.slug == 'us' %}
                 <div class="col-lg-12 col-xl-12 mg-b-10">
                     <div class="card card-body">
-                        <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">New Api!</h6>
+                        <h6 class="tx-uppercase tx-11 tx-spacing-1 tx-color-02 tx-semibold mg-b-8">Data Accuracy</h6>
                         <div class="d-flex d-lg-block d-xl-flex align-items-end">
-                            <p>If you are interested in doing your own analytics or making your own dashboard, feel free to hit <a href="https://api.covid.bio/" target="_blank">Our New Api!</a></p>
-                            <p>The API is free. We just ask for you to cite us as your source of data.</p>
+                            <p>We know that these statistics are not perfect, but they are updated once daily from Johns Hopkins who keeps changing their data format and doing a poor job of collecting data..</p>
                         </div>
                     </div>
                 </div><!-- col -->
@@ -429,8 +448,9 @@
                                 {% for country_name, country in countries.items() %}
                                     <tr>
                                         <td class="tx-color-03 tx-normal">{% if url_data.display_countries %}<a
-                                                href="/{{ country_name.lower().replace(' ', '-') }}">{{ country_name }}</a>{% else %}
-                                            {{ country_name }}{% endif %}
+                                                href="/{{ country_name.lower().replace(' ', '-') }}">{{ country_name }}</a>{% else %}<a
+                                                href="/{{ url_data.slug }}/{{ country_name.lower().replace(' ', '-') }}">
+                                            {{ country_name }}</a>{% endif %}
                                         </td>
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.confirmed }}">{{ "{:,.0f}".format(country.totals.confirmed) }}
@@ -769,7 +789,7 @@
 
     const yaxisLog = {
         show: true,
-        max: 150000,
+        max: 1000000,
         mode: 'log',
         transform: function (v) {
             return v > 0 ? Math.log(v) / Math.LN10 : null

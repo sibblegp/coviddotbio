@@ -12,6 +12,7 @@ APP = Flask(__name__)
 URL_ATTRIBS = {
     "/": {
         "nav": "Worldwide Without China",
+        "sub_nav": False,
         "slug": "worldwide-minus",
         "title": "Covid-19 Worldwide Statistics (minus China)",
         "display_countries": True,
@@ -19,6 +20,7 @@ URL_ATTRIBS = {
     },
     "/with-china": {
         "nav": "Worldwide including China",
+        "sub_nav": False,
         "slug": "worldwide",
         "title": "Covid-19 Worldwide (including China) Statistics",
         "display_countries": True,
@@ -26,6 +28,7 @@ URL_ATTRIBS = {
     },
     "/minus-china": {
         "nav": "Worldwide Minus China",
+        "sub_nav": False,
         "slug": "worldwide-minus-china",
         "title": "Covid-19 Worldwide Statistics (minus China)",
         "display_countries": True,
@@ -33,6 +36,7 @@ URL_ATTRIBS = {
     },
     "/growth": {
         "nav": "Growth",
+        "sub_nav": False,
         "slug": "growth",
         "title": "Covid-19 Growth Comparison",
         "display_countries": False,
@@ -60,10 +64,11 @@ def create_js_compatible_date(date):
     return "gd(20" + d[2] + ", " + d[0] + ", " + d[1] + ")"
 
 
-def render_page(url, minus_china, country_slug=None):
+def render_page(url, minus_china, country_slug=None, region_slug=None):
+    #abort(400)
     url_prefix = os.getenv("URL_PREFIX")
     menu_data = config.WORLDWIDE_REGIONS
-    data = DataLoader()
+    data = DataLoader(live=True)
     analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, minus_china)
     country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
@@ -76,6 +81,10 @@ def render_page(url, minus_china, country_slug=None):
         "deaths": [0]
     }
 
+    states = []
+    for state_name in analytics.countries['US']['regions'].keys():
+        states.append(state_name)
+
     country_pairs = {}
     region_map_data = {}
     for pair in country_slug_data:
@@ -83,80 +92,169 @@ def render_page(url, minus_china, country_slug=None):
     if country_slug:
         if country_slug in country_slugs:
             country = country_pairs[country_slug]
-            totals = analytics.countries[country]['totals']
 
-            region_display = False
-            countries = []
-            if 'regions' in analytics.countries[country]:
-                region_display = True
-                countries = analytics.countries[country]["regions"]
+            if region_slug:
+                region_slugs = [x.lower().replace(' ', '-') for x in analytics.countries[country]['regions']]
+                region_slug_data = list(zip(region_slugs, analytics.countries[country]['regions'].keys()))
+                region_pairs = {}
+                for pair in region_slug_data:
+                    region_pairs.update({pair[0]: pair[1]})
 
-            url_data = {
-                "nav": country,
-                "slug": country.lower(),
-                "title": country + " Statistics",
-                "display_countries": False,
-                "sub_levels": region_display
-            }
-            chart_data = {
-                "confirmed": list(zip(analytics.dates, analytics.countries[country]["dailies"]["confirmed"])),
-                "recovered": list(zip(analytics.dates, analytics.countries[country]["dailies"]["recovered"])),
-                "deaths": list(zip(analytics.dates, analytics.countries[country]["dailies"]["deaths"])),
-                "infected": list(zip(analytics.dates, analytics.countries[country]["dailies"]["infected"]))
-            }
+                if region_slug in region_slugs:
+                    region = region_pairs[region_slug]
+                    totals = analytics.countries[country]['regions'][region]['totals']
 
-            for i in range(1, analytics.date_count):
-                confirmed_delta = int(analytics.countries[country]["dailies"]["confirmed"][i]) - int(analytics.countries[country]["dailies"]["confirmed"][i - 1])
-                recovered_delta = int(analytics.countries[country]["dailies"]["recovered"][i]) - int(
-                    analytics.countries[country]["dailies"]["recovered"][i - 1])
-                infected_delta = int(analytics.countries[country]["dailies"]["infected"][i]) - int(
-                    analytics.countries[country]["dailies"]["infected"][i - 1])
-                deaths_delta = int(analytics.countries[country]["dailies"]["deaths"][i]) - int(
-                    analytics.countries[country]["dailies"]["deaths"][i - 1])
+                    region_display = False
+                    countries = []
+                    if 'regions' in analytics.countries[country]['regions'][region]:
+                        region_display = True
+                        # countries = analytics.countries[country]["regions"]
+
+                    url_data = {
+                        "nav": country,
+                        "sub_nav": region,
+                        "slug": region.lower(),
+                        "title": region + " Statistics",
+                        "display_countries": False,
+                        "sub_levels": region_display
+                    }
+                    chart_data = {
+                        "confirmed": list(zip(analytics.dates, analytics.countries[country]['regions'][region]["dailies"]["confirmed"])),
+                        "recovered": list(zip(analytics.dates, analytics.countries[country]['regions'][region]["dailies"]["recovered"])),
+                        "deaths": list(zip(analytics.dates, analytics.countries[country]['regions'][region]["dailies"]["deaths"])),
+                        "infected": list(zip(analytics.dates, analytics.countries[country]['regions'][region]["dailies"]["infected"]))
+                    }
+
+                    for i in range(1, analytics.date_count):
+                        confirmed_delta = int(analytics.countries[country]['regions'][region]["dailies"]["confirmed"][i]) - int(
+                            analytics.countries[country]['regions'][region]["dailies"]["confirmed"][i - 1])
+                        recovered_delta = int(analytics.countries[country]['regions'][region]["dailies"]["recovered"][i]) - int(
+                            analytics.countries[country]['regions'][region]["dailies"]["recovered"][i - 1])
+                        infected_delta = int(analytics.countries[country]['regions'][region]["dailies"]["infected"][i]) - int(
+                            analytics.countries[country]['regions'][region]["dailies"]["infected"][i - 1])
+                        deaths_delta = int(analytics.countries[country]['regions'][region]["dailies"]["deaths"][i]) - int(
+                            analytics.countries[country]['regions'][region]["dailies"]["deaths"][i - 1])
+
+                        deltas_timeseries["confirmed"].append(confirmed_delta)
+                        deltas_timeseries["infected"].append(infected_delta)
+                        deltas_timeseries["recovered"].append(recovered_delta)
+                        deltas_timeseries["deaths"].append(deaths_delta)
+
+                    delta_chart_data = {
+                        "confirmed": list(zip(analytics.dates, deltas_timeseries["confirmed"])),
+                        "recovered": list(zip(analytics.dates, deltas_timeseries["recovered"])),
+                        "deaths": list(zip(analytics.dates, deltas_timeseries["deaths"])),
+                        "infected": list(zip(analytics.dates, deltas_timeseries["infected"]))
+                    }
+
+                    primary_deltas = {
+                        "confirmed": analytics.countries[country]['regions'][region]["deltas"]["confirmed"][-1],
+                        "recovered": analytics.countries[country]['regions'][region]["deltas"]["recovered"][-1],
+                        "deaths": analytics.countries[country]['regions'][region]["deltas"]["deaths"][-1],
+                        "infected": analytics.countries[country]['regions'][region]["deltas"]["infected"][-1],
+                    }
+
+                    regression_data = {
+                        "confirmed": exponential_regression(range(0, analytics.date_count),
+                                                            analytics.countries[country]['regions'][region]["dailies"]["confirmed"])
+                    }
+
+                    if country_slug == 'us':
+                        state_totals = {}
+                        for state in analytics.countries[country]["regions"].keys():
+                            if ', ' not in state:
+                                adjusted_state = convert_state_to_code(state)
+                                state_totals[adjusted_state] = 0
+                        for state, state_data in analytics.countries[country]["regions"].items():
+                            if ', ' not in state:
+                                adjusted_state = convert_state_to_code(state)
+                                state_totals[adjusted_state] += \
+                                analytics.countries[country]["regions"][state]["totals"]["confirmed"]
+                                region_map_data[adjusted_state] = state_totals[adjusted_state]
+                        print(region_map_data)
+
+                    active_increased = True
+                    if primary_deltas['infected'] < 0:
+                        active_increased = False
+                else:
+                    abort(404, 'Region not found')
+            else:
+
+                totals = analytics.countries[country]['totals']
+
+                region_display = False
+                countries = []
+                if 'regions' in analytics.countries[country]:
+                    region_display = True
+                    countries = analytics.countries[country]["regions"]
+
+                url_data = {
+                    "nav": country,
+                    "sub_nav": False,
+                    "slug": country.lower(),
+                    "title": country + " Statistics",
+                    "display_countries": False,
+                    "sub_levels": region_display
+                }
+                chart_data = {
+                    "confirmed": list(zip(analytics.dates, analytics.countries[country]["dailies"]["confirmed"])),
+                    "recovered": list(zip(analytics.dates, analytics.countries[country]["dailies"]["recovered"])),
+                    "deaths": list(zip(analytics.dates, analytics.countries[country]["dailies"]["deaths"])),
+                    "infected": list(zip(analytics.dates, analytics.countries[country]["dailies"]["infected"]))
+                }
+
+                for i in range(1, analytics.date_count):
+                    confirmed_delta = int(analytics.countries[country]["dailies"]["confirmed"][i]) - int(analytics.countries[country]["dailies"]["confirmed"][i - 1])
+                    recovered_delta = int(analytics.countries[country]["dailies"]["recovered"][i]) - int(
+                        analytics.countries[country]["dailies"]["recovered"][i - 1])
+                    infected_delta = int(analytics.countries[country]["dailies"]["infected"][i]) - int(
+                        analytics.countries[country]["dailies"]["infected"][i - 1])
+                    deaths_delta = int(analytics.countries[country]["dailies"]["deaths"][i]) - int(
+                        analytics.countries[country]["dailies"]["deaths"][i - 1])
 
 
-                deltas_timeseries["confirmed"].append(confirmed_delta)
-                deltas_timeseries["infected"].append(infected_delta)
-                deltas_timeseries["recovered"].append(recovered_delta)
-                deltas_timeseries["deaths"].append(deaths_delta)
+                    deltas_timeseries["confirmed"].append(confirmed_delta)
+                    deltas_timeseries["infected"].append(infected_delta)
+                    deltas_timeseries["recovered"].append(recovered_delta)
+                    deltas_timeseries["deaths"].append(deaths_delta)
 
-            delta_chart_data = {
-                "confirmed": list(zip(analytics.dates, deltas_timeseries["confirmed"])),
-                "recovered": list(zip(analytics.dates, deltas_timeseries["recovered"])),
-                "deaths": list(zip(analytics.dates, deltas_timeseries["deaths"])),
-                "infected": list(zip(analytics.dates, deltas_timeseries["infected"]))
-            }
-
-
-            primary_deltas = {
-                "confirmed": analytics.countries[country]["deltas"]["confirmed"][-1],
-                "recovered": analytics.countries[country]["deltas"]["recovered"][-1],
-                "deaths": analytics.countries[country]["deltas"]["deaths"][-1],
-                "infected": analytics.countries[country]["deltas"]["infected"][-1],
-            }
-
-            regression_data = {
-                "confirmed": exponential_regression(range(0, analytics.date_count),
-                                                    analytics.countries[country]["dailies"]["confirmed"])
-            }
-
-            if country_slug == 'us':
-                state_totals = {}
-                for state in analytics.countries[country]["regions"].keys():
-                    if ', ' not in state:
-                        adjusted_state = convert_state_to_code(state)
-                        state_totals[adjusted_state] = 0
-                for state, state_data in analytics.countries[country]["regions"].items():
-                    if ', ' not in state:
-                        adjusted_state = convert_state_to_code(state)
-                        state_totals[adjusted_state] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
-                        region_map_data[adjusted_state] = state_totals[adjusted_state]
-                print(region_map_data)
+                delta_chart_data = {
+                    "confirmed": list(zip(analytics.dates, deltas_timeseries["confirmed"])),
+                    "recovered": list(zip(analytics.dates, deltas_timeseries["recovered"])),
+                    "deaths": list(zip(analytics.dates, deltas_timeseries["deaths"])),
+                    "infected": list(zip(analytics.dates, deltas_timeseries["infected"]))
+                }
 
 
-            active_increased = True
-            if primary_deltas['infected'] < 0:
-                active_increased = False
+                primary_deltas = {
+                    "confirmed": analytics.countries[country]["deltas"]["confirmed"][-1],
+                    "recovered": analytics.countries[country]["deltas"]["recovered"][-1],
+                    "deaths": analytics.countries[country]["deltas"]["deaths"][-1],
+                    "infected": analytics.countries[country]["deltas"]["infected"][-1],
+                }
+
+                regression_data = {
+                    "confirmed": exponential_regression(range(0, analytics.date_count),
+                                                        analytics.countries[country]["dailies"]["confirmed"])
+                }
+
+                if country_slug == 'us':
+                    state_totals = {}
+                    for state in analytics.countries[country]["regions"].keys():
+                        if ', ' not in state:
+                            adjusted_state = convert_state_to_code(state)
+                            state_totals[adjusted_state] = 0
+                    for state, state_data in analytics.countries[country]["regions"].items():
+                        if ', ' not in state:
+                            adjusted_state = convert_state_to_code(state)
+                            state_totals[adjusted_state] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
+                            region_map_data[adjusted_state] = state_totals[adjusted_state]
+                    print(region_map_data)
+
+
+                active_increased = True
+                if primary_deltas['infected'] < 0:
+                    active_increased = False
         else:
             return abort(404, "Country not found")
     else:
@@ -216,12 +314,13 @@ def render_page(url, minus_china, country_slug=None):
     trend_chart_data = {"confirmed": list(zip(analytics.dates, regression_data["confirmed"]))}
 
     dates = analytics.dates
+    print(url_data)
     return render_template('dashboard.jinja2', chart_data=chart_data, totals=totals,
                            primary_deltas=primary_deltas, countries=countries, url_data=url_data, url_prefix=url_prefix,
                            active_increased=active_increased, dates=dates, trend_chart_data=trend_chart_data,
                            delta_chart_data=delta_chart_data, update_string=data.update_string,
                            date_stamp=data.update_date_stamp, menu_data=menu_data, region_map_data=region_map_data,
-                           country_menu=country_menu)
+                           country_menu=country_menu, states=states)
 
 
 @APP.route('/')
@@ -248,8 +347,15 @@ def render_country(country_slug):
     slug = country_slug.lower().replace(' ', '-')
     return render_page(url=None, minus_china=False, country_slug=slug)
 
+@APP.route('/<country_slug>/<region_slug>')
+def render_country_region(country_slug, region_slug):
+    slug = country_slug.lower().replace(' ', '-')
+    rg_slug = region_slug.lower().replace(' ', '-')
+    return render_page(url=None, minus_china=False, country_slug=slug, region_slug=rg_slug)
+
 @APP.route('/growth')
 def compare_countries():
+    #abort(400)
     url_data = URL_ATTRIBS['/growth']
     data = DataLoader()
     analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, True)
@@ -330,6 +436,7 @@ def compare_countries():
         }
         start_dates.update(update)
     sorted_countries = sorted(country_growths, key=lambda key: len(country_growths[key]), reverse=True)
+
     return render_template('compare.jinja2', country_growths=country_growths, url_data=url_data,
                            country_menu=country_menu, day_indexes=day_indexes, chart_max=chart_max,
                            date_stamp=data.update_date_stamp, country_growth_bars=country_growth_bars,

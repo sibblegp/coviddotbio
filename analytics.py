@@ -91,9 +91,12 @@ class Analytics:
                                 self.countries[country]["regions"][region]["dailies"]["infected"][i] - \
                                 self.countries[country]["regions"][region]["dailies"]["infected"][i - 1]
 
-                            self.countries[country]["regions"][region]["deltas"]["recovered"][i] = \
-                                self.countries[country]["regions"][region]["dailies"]["recovered"][i] - \
-                                self.countries[country]["regions"][region]["dailies"]["recovered"][i - 1]
+                            try:
+                                self.countries[country]["regions"][region]["deltas"]["recovered"][i] = \
+                                    self.countries[country]["regions"][region]["dailies"]["recovered"][i] - \
+                                    self.countries[country]["regions"][region]["dailies"]["recovered"][i - 1]
+                            except:
+                                self.countries[country]["regions"][region]["deltas"]["recovered"][i] = 0
 
                             self.countries[country]["regions"][region]["deltas"]["deaths"][i] = \
                                 self.countries[country]["regions"][region]["dailies"]["deaths"][i] - \
@@ -104,7 +107,10 @@ class Analytics:
                         # Set Country dailies
                         self.countries[country]["dailies"]["confirmed"][i] += daily_confirmed[i]
                         self.countries[country]["dailies"]["infected"][i] += daily_infected[i]
-                        self.countries[country]["dailies"]["recovered"][i] += daily_recovered[i]
+                        try:
+                            self.countries[country]["dailies"]["recovered"][i] += daily_recovered[i]
+                        except:
+                            self.countries[country]["dailies"]["recovered"][i] += 0
                         self.countries[country]["dailies"]["deaths"][i] += daily_deaths[i]
 
                         self.countries[country]["deltas"]["confirmed"][i] += \
@@ -121,7 +127,11 @@ class Analytics:
                         # Add to overall dailies
                         total_daily_confirmed[i] += daily_confirmed[i]
                         total_daily_infected[i] += daily_infected[i]
-                        total_daily_recovered[i] += daily_recovered[i]
+                        try:
+                            total_daily_recovered[i] += daily_recovered[i]
+                        except:
+                            total_daily_recovered[0] += 0
+
                         total_daily_deaths[i] += daily_deaths[i]
 
                     # if region == country:
@@ -192,8 +202,11 @@ class Analytics:
             # if country == 'US' and ", " in region:
             #     region = self.convert_region(region)
             if not exclude:
-                self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
-                self.countries[country]["regions"][region]["dailies"][name] = [int(x) for x in row[4:]]
+                try:
+                    self.countries[country]["regions"][region]["totals"][name] = self.get_row_total(row)
+                    self.countries[country]["regions"][region]["dailies"][name] = [int(x) for x in row[4:]]
+                except:
+                    pass
                 
 
     def gather_infected(self):
@@ -205,9 +218,14 @@ class Analytics:
                 for region_name, region in country["regions"].items():
                     region_infected = 0
                     for i in range(0, self.date_count):
-                        region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][
+                        try:
+                            region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][
                                               i] - \
                                           self.countries[country_name]["regions"][region_name]["dailies"]["recovered"][
+                                              i] - \
+                                          self.countries[country_name]["regions"][region_name]["dailies"]["deaths"][i]
+                        except:
+                            region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][
                                               i] - \
                                           self.countries[country_name]["regions"][region_name]["dailies"]["deaths"][i]
                         self.countries[country_name]["regions"][region_name]["dailies"]["infected"][i] = region_infected
