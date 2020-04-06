@@ -445,6 +445,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {% if countries.keys()|length > 0 %}
                                 {% for country_name, country in countries.items() %}
                                     <tr>
                                         <td class="tx-color-03 tx-normal">{% if url_data.display_countries %}<a
@@ -481,6 +482,7 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                    {% endif %}
                                 </tbody>
                             </table>
                         </div><!-- table-responsive -->

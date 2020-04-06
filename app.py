@@ -69,7 +69,7 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
     url_prefix = os.getenv("URL_PREFIX")
     menu_data = config.WORLDWIDE_REGIONS
     data = DataLoader(live=True)
-    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, minus_china)
+    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, minus_china)
     country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
@@ -106,7 +106,7 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
 
                     region_display = False
                     countries = []
-                    if 'regions' in analytics.countries[country]['regions'][region]:
+                    if 'regions' in analytics.countries[country]['regions'][region] and country_slug != 'us':
                         region_display = True
                         # countries = analytics.countries[country]["regions"]
 
@@ -358,7 +358,8 @@ def compare_countries():
     #abort(400)
     url_data = URL_ATTRIBS['/growth']
     data = DataLoader()
-    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, True)
+    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw,
+                          data.us_deaths_raw, True)
     country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))

@@ -2,6 +2,9 @@ JH_CONFIRMED_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/
 JH_RECOVERED_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 JH_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 
+JH_US_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"
+JH_US_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"
+
 #API_CONFIRMED_CASES = "https://coviddata.github.io/covid-api/v1/regions/cases.csv"
 #API_RECOVERED_CASES = "https://coviddata.github.io/covid-api/v1/regions/recoveries.csv"
 #API_DEATHS = "https://coviddata.github.io/covid-api/v1/regions/deaths.csv"
