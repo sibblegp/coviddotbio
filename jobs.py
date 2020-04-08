@@ -16,8 +16,8 @@ def get_files():
 
     data = DataLoader(live=True)
     data2 = DataLoader(live=True)
-    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, ignore_china=False)
-    analytics_without_china = Analytics(data2.confirmed_raw, data2.recovered_raw, data2.deaths_raw, ignore_china=True)
+    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, ignore_china=False)
+    analytics_without_china = Analytics(data2.confirmed_raw, data2.recovered_raw, data2.deaths_raw, data.us_cases_raw, data.us_deaths_raw, ignore_china=True)
 
     #TODO: Check the data here
 
@@ -29,6 +29,10 @@ def get_files():
         s3.Bucket('covidbio-covid-data').put_object(Key='recovered.csv', Body=data.recovered.content.decode('utf-8'),
                                                     ACL='public-read')
         s3.Bucket('covidbio-covid-data').put_object(Key='deaths.csv', Body=data.deaths.content.decode('utf-8'),
+                                                    ACL='public-read')
+        s3.Bucket('covidbio-covid-data').put_object(Key='us_cases.csv', Body=data.us_cases.content.decode('utf-8'),
+                                                    ACL='public-read')
+        s3.Bucket('covidbio-covid-data').put_object(Key='us_deaths.csv', Body=data.us_deaths.content.decode('utf-8'),
                                                     ACL='public-read')
         date_string = datetime.datetime.utcnow().strftime('Last updated on %B %d, %Y at %H:%M UTC')
         date_stamp = datetime.datetime.utcnow().isoformat().split('.')[0] + 'Z'
@@ -42,8 +46,8 @@ def publish_analytics():
 
     data2 = DataLoader(live=True)
 
-    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, ignore_china=False)
-    analytics_without_china = Analytics(data2.confirmed_raw, data2.recovered_raw, data2.deaths_raw, ignore_china=True)
+    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, ignore_china=False)
+    analytics_without_china = Analytics(data2.confirmed_raw, data2.recovered_raw, data2.deaths_raw, data.us_cases_raw, data.us_deaths_raw, ignore_china=True)
 
     date_stamp = datetime.datetime.utcnow().isoformat().split('.')[0] + 'Z'
     date_stamp = date_stamp.replace('T', ' ')

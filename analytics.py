@@ -37,7 +37,7 @@ class Analytics:
         self.gather_country_region_data(self.deaths_time_series, "deaths")
         self.gather_us_county_region_data(self.us_confirmed_time_series, "confirmed")
         self.gather_us_county_region_data(self.us_deaths_time_series, "deaths")
-        #self.gather_infected()
+        self.gather_infected()
 
         self.totals = {}
         self.set_country_totals(self.countries)
@@ -225,7 +225,6 @@ class Analytics:
         for row in dataset:
             county = row[5]
             state = row[6]
-            print(county + state)
             if row[-1] == '':
                 del row[-1]
             if county == '':
@@ -247,7 +246,6 @@ class Analytics:
             else:
                 for region_name, region in country["regions"].items():
                     region_infected = 0
-                    print(country_name + region_name)
                     for i in range(0, self.date_count):
                         try:
                             region_infected = self.countries[country_name]["regions"][region_name]["dailies"]["confirmed"][
@@ -337,7 +335,6 @@ class Analytics:
         for row in self.us_confirmed_time_series:
             state = row[6]
             county = row[5]
-            print(state + county)
             if county == '':
                 county = state
             exclude = False

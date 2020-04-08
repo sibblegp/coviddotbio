@@ -24,6 +24,10 @@ JH_US_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master
 CONFIRMED_CASES = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/confirmed.csv"
 RECOVERED_CASES = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/recovered.csv"
 DEATHS = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/deaths.csv"
+US_DEATHS = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/us_deaths.csv"
+US_CASES = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/us_cases.csv"
+
+ANALYTICS = "https://covidbio-covid-data.s3.us-east-2.amazonaws.com/analytics.json"
 
 UPDATE_STRING = 'https://covidbio-covid-data.s3.us-east-2.amazonaws.com/updated_string.txt'
 UPDATE_DATE_STAMP = 'https://covidbio-covid-data.s3.us-east-2.amazonaws.com/date_stamp.txt'

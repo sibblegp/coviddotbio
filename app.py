@@ -68,7 +68,7 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
     #abort(400)
     url_prefix = os.getenv("URL_PREFIX")
     menu_data = config.WORLDWIDE_REGIONS
-    data = DataLoader(live=True)
+    data = DataLoader()
     analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, minus_china)
     country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
@@ -365,7 +365,7 @@ def compare_countries():
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
     just_over_1000_countries = {}
     for country_name, country in analytics.countries.items():
-        if country_name not in ['Korea, South', 'Iran'] and country['totals']['confirmed'] > 4000:
+        if country_name not in ['Korea, South', 'Iran'] and country['totals']['confirmed'] > 10000:
             update = {
                 country_name: country,
             }

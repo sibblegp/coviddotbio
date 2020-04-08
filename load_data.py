@@ -34,8 +34,8 @@ class DataLoader:
             self.confirmed = requests.get(config.CONFIRMED_CASES)
             self.recovered = requests.get(config.RECOVERED_CASES)
             self.deaths = requests.get(config.DEATHS)
-            self.us_cases = requests.get(config.JH_US_CASES)
-            self.us_deaths = requests.get(config.JH_US_DEATHS)
+            self.us_cases = requests.get(config.US_CASES)
+            self.us_deaths = requests.get(config.US_DEATHS)
 
             # self.confirmed = s3.Object('covidbio-covid-data', "confirmed.csv")
             # self.recovered = s3.Object('covidbio-covid-data', "recovered.csv")

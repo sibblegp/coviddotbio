@@ -23,6 +23,7 @@
         "events": [{
             "function": "jobs.publish_analytics",
             "expression": "rate(30 minutes)"
-        }]
+        }],
+        "slim_handler": true
     }
 }
