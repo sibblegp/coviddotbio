@@ -3,7 +3,7 @@ import datetime
 
 class Analytics:
 
-    def __init__(self, confirmed_raw, recovered_raw, deaths_raw, us_cases, us_deaths, ignore_china=False):
+    def __init__(self, confirmed_raw, recovered_raw, deaths_raw, us_cases, us_deaths, ignore_china=False, cache=None):
         self.ignore_china = ignore_china
         self.general_data_format = {
             "totals": {
@@ -24,26 +24,31 @@ class Analytics:
         self.us_deaths_raw = us_deaths
         self.primary_data = None
         self.dates = []
-        self.confirmed_time_series = self.munge_csv_data(self.confirmed_raw)
-        self.recovered_time_series = self.munge_csv_data(self.recovered_raw)
-        self.deaths_time_series = self.munge_csv_data(self.deaths_raw)
-        self.us_confirmed_time_series = self.munge_csv_data(self.us_cases_raw, True)
-        self.us_deaths_time_series = self.munge_csv_data(self.us_deaths_raw, True)
-        self.countries = self.get_countries_regions()
-        self.states = self.get_states()
+        if not cache:
+            self.confirmed_time_series = self.munge_csv_data(self.confirmed_raw)
+            self.recovered_time_series = self.munge_csv_data(self.recovered_raw)
+            self.deaths_time_series = self.munge_csv_data(self.deaths_raw)
+            self.us_confirmed_time_series = self.munge_csv_data(self.us_cases_raw, True)
+            self.us_deaths_time_series = self.munge_csv_data(self.us_deaths_raw, True)
+            self.countries = self.get_countries_regions()
+            self.states = self.get_states()
 
-        self.gather_country_region_data(self.confirmed_time_series, "confirmed")
-        self.gather_country_region_data(self.recovered_time_series, "recovered")
-        self.gather_country_region_data(self.deaths_time_series, "deaths")
-        self.gather_us_county_region_data(self.us_confirmed_time_series, "confirmed")
-        self.gather_us_county_region_data(self.us_deaths_time_series, "deaths")
-        self.gather_infected()
+            self.gather_country_region_data(self.confirmed_time_series, "confirmed")
+            self.gather_country_region_data(self.recovered_time_series, "recovered")
+            self.gather_country_region_data(self.deaths_time_series, "deaths")
+            self.gather_us_county_region_data(self.us_confirmed_time_series, "confirmed")
+            self.gather_us_county_region_data(self.us_deaths_time_series, "deaths")
+            self.gather_infected()
 
-        self.totals = {}
-        self.set_country_totals(self.countries)
-        self.set_country_totals(self.states, False)
-        self.countries['US']['regions'] = self.states
-        # print(self.countries["China"])
+            self.totals = {}
+            self.set_country_totals(self.countries)
+            self.set_country_totals(self.states, False)
+            self.countries['US']['regions'] = self.states
+            # print(self.countries["China"])
+        else:
+            self.countries = cache['countries']
+            self.totals = cache['totals']
+            self.dates = cache['raw-dates']
 
     def convert_region(self, region, country):
         new_region = region
@@ -235,7 +240,16 @@ class Analytics:
             if not exclude:
                 if state != '' and county != '':
                     self.states[state]['regions'][county]["totals"][name] = self.get_row_total(row)
-                    self.states[state]['regions'][county]["dailies"][name] = [int(x) for x in row[11:]]
+                    if name == 'deaths':
+                        try:
+                            self.states[state]['regions'][county]["dailies"][name] = [int(x) for x in row[12:]]
+                        except:
+                            self.states[state]['regions'][county]["dailies"][name] = [int(float(x)) for x in row[12:]]
+                    else:
+                        try:
+                            self.states[state]['regions'][county]["dailies"][name] = [int(x) for x in row[11:]]
+                        except:
+                            self.states[state]['regions'][county]["dailies"][name] = [int(float(x)) for x in row[11:]]
                 
 
     def gather_infected(self):
@@ -385,7 +399,7 @@ class Analytics:
 
         return states
 
-
+    #TODO: Set this value specifically instead of it being a property
     @property
     def date_count(self):
         return len(self.dates)

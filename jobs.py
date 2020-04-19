@@ -60,7 +60,9 @@ def publish_analytics():
         "totals": analytics.totals,
         "totals-minus-china": analytics_without_china.totals,
         "countries": analytics.countries,
-
+        "raw-dates": analytics.dates,
+        "date-string": data.update_string,
+        "date-stamp": data.update_date_stamp
     }
 
     s3.Bucket('covidbio-covid-data').put_object(Key='analytics.json', Body=json.dumps(json_data),

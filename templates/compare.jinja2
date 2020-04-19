@@ -78,14 +78,15 @@
         </div><!-- navbar-menu-header -->
         <ul class="nav navbar-menu">
             <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
-            <li class="nav-item {% if url_data.slug == 'worldwide-minus' %}active{% endif %}">
+            <li class="nav-item {% if url_data.slug == 'worldwide-home' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/" class="nav-link"><i
-                        data-feather="pie-chart"></i> Worldwide (minus China)</a>
+                        data-feather="pie-chart"></i> Worldwide</a>
 
             </li>
-            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
-                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/with-china" class="nav-link"><i
-                        data-feather="pie-chart"></i> Worldwide</a>
+
+        <li class="nav-item {% if url_data.slug == 'us' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/us" class="nav-link"><i
+                        data-feather="pie-chart"></i> United States</a>
 
             </li>
 
@@ -94,7 +95,7 @@
                 <a href="" class="nav-link">Top Countries</a>
                 <ul class="navbar-menu-sub">
                     {% for country in country_menu|sort %}
-                        <li class="nav-sub-item"><a href="{{ country.lower().replace(' ', '-') }}"
+                        <li class="nav-sub-item"><a href="/{{ country.lower().replace(' ', '-') }}"
                                                     class="nav-sub-link">{{ country }}</a>
 
 
@@ -103,9 +104,28 @@
 
                 </ul>
             </li>
+            <li class="nav-item with-sub">
+                <a href="" class="nav-link">US States</a>
+                    <div class="navbar-menu-sub">
+                        <div class="d-lg-flex">
+                                {% for state in states|sort %}
+                        {% if loop.index0 == 0 %}<ul>{% endif %}
+                        <li class="nav-sub-item"><a href="/us/{{ state.lower().replace(' ', '-') }}"
+                                                    class="nav-sub-link">{{ state }}</a>
+
+
+                        </li>
+                        {% if loop.index0 == 28 %}</ul><ul>{% endif %}
+                    {% endfor %}
+                </ul>
+                        </div>
+                    </div>
+
+
+            </li>
             <li class="nav-item {% if url_data.slug == 'growth' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/growth" class="nav-link"><i
-                        data-feather="pie-chart"></i> Growth (New!)</a>
+                        data-feather="pie-chart"></i> Growth Rates</a>
 
             </li>
         </ul>

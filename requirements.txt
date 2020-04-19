@@ -25,9 +25,7 @@ jmespath==0.9.5
 kappa==0.6.0
 kiwisolver==1.1.0
 MarkupSafe==1.1.1
-numpy==1.18.1
 pip-tools==4.5.1
-pkg-resources==0.0.0
 placebo==0.9.0
 Pygments==2.5.2
 pyparsing==2.4.6
@@ -36,7 +34,6 @@ python-slugify==4.0.0
 PyYAML==5.3
 requests==2.23.0
 s3transfer==0.3.3
-scipy==1.4.1
 six==1.14.0
 smmap==3.0.1
 text-unidecode==1.3

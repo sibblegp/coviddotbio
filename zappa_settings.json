@@ -11,7 +11,7 @@
             "function": "jobs.get_files",
             "expression": "rate(5 minutes)"
         }],
-        "slim_handler": true
+        "slim_handler": false
     },
     "api": {
         "app_function": "api.API",

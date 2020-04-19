@@ -78,14 +78,15 @@
         </div><!-- navbar-menu-header -->
         <ul class="nav navbar-menu">
             <li class="nav-label pd-l-20 pd-lg-l-25 d-lg-none">Main Navigation</li>
-            <li class="nav-item {% if url_data.slug == 'worldwide-minus' %}active{% endif %}">
+            <li class="nav-item {% if url_data.slug == 'worldwide-home' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/" class="nav-link"><i
-                        data-feather="pie-chart"></i> Worldwide (minus China)</a>
+                        data-feather="pie-chart"></i> Worldwide</a>
 
             </li>
-            <li class="nav-item {% if url_data.slug == 'worldwide' %}active{% endif %}">
-                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/with-china" class="nav-link"><i
-                        data-feather="pie-chart"></i> Worldwide</a>
+
+        <li class="nav-item {% if url_data.slug == 'us' %}active{% endif %}">
+                <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/us" class="nav-link"><i
+                        data-feather="pie-chart"></i> United States</a>
 
             </li>
 
@@ -114,7 +115,7 @@
 
 
                         </li>
-                        {% if loop.index0 == 27 %}</ul><ul>{% endif %}
+                        {% if loop.index0 == 28 %}</ul><ul>{% endif %}
                     {% endfor %}
                 </ul>
                         </div>
@@ -124,7 +125,7 @@
             </li>
             <li class="nav-item {% if url_data.slug == 'growth' %}active{% endif %}">
                 <a href="{% if url_prefix %}/{{ url_prefix }}{% endif %}/growth" class="nav-link"><i
-                        data-feather="pie-chart"></i> Growth (New!)</a>
+                        data-feather="pie-chart"></i> Growth Rates</a>
 
             </li>
         </ul>
@@ -225,8 +226,8 @@
                 <div class="card card-crypto">
                     <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <nav class="nav nav-line">
-                            <a id="total-btn" href="#" class="nav-link active">Totals</a>
-                            <a id="delta-btn" href="#" class="nav-link">Daily Changes</a>
+                            <a id="total-btn" href="#" class="nav-link active">Cases</a>
+                            <a id="delta-btn" href="#" class="nav-link">Deaths</a>
                         </nav>
 
 
@@ -258,10 +259,13 @@
                         <div class="chart-one">
                             <div id="flotChart" class="flot-chart"></div>
                             <div id="deltaChart" class="flot-chart"></div>
+                            <div id="deathsFlotChart" class="flot-chart"></div>
+                            <div id="deathsDeltaChart" class="flot-chart"></div>
                         </div><!-- chart-one -->
 
+
                     </div><!-- card-body -->
-                    <div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
+                    {#<div class="card-header pd-y-8 d-sm-flex align-items-center justify-content-between">
                         <ul class="list-inline d-flex mg-t-20 mg-sm-t-10 mg-md-t-0 mg-b-0">
                             <li class="list-inline-item d-flex align-items-center mg-l-5">
                                 <span class="d-block wd-10 ht-10 bg-df-2 rounded mg-r-5"></span>
@@ -277,7 +281,7 @@
                                 <span class="tx-sans tx-uppercase tx-10 tx-medium tx-color-03">Deaths</span>
                             </li>
                         </ul>
-                    </div><!-- card-header -->
+                    </div><!-- card-header -->#}
                 </div><!-- card -->
             </div><!-- col -->
            {#  <div class="col-md-6 col-lg-4 col-xl-3 mg-t-10 mg-lg-t-0">
@@ -385,15 +389,13 @@
                 </div><!-- col -->
             {% endif %}
 
-            {% if url_data.sub_levels %}
+            {% if url_data.sub_levels and countries.keys()|length > 1 %}
                 <div class="col-lg-12 col-xl-12 mg-t-10">
                     <div class="card mg-b-10">
                         <div class="card-header pd-t-20 d-sm-flex align-items-start justify-content-between bd-b-0 pd-b-0">
                             <div>
-                                <h6 class="mg-b-5">{% if url_data.display_countries %}Country{% else %}Region{% endif %}
-                                    Reports</h6>
-                                <p class="tx-13 tx-color-03 mg-b-0">{% if url_data.display_countries %}Track your
-                                    countries numbers{% else %}Track Regional Data{% endif %}</p>
+                                <h6 class="mg-b-5">{{ url_data.report_title }}</h6>
+                                <p class="tx-13 tx-color-03 mg-b-0">{{ url_data.report_desc }}</p>
                             </div>
                             <!--                <div class="d-flex mg-t-20 mg-sm-t-0">-->
                             <!--                  <div class="btn-group flex-fill">-->
@@ -453,12 +455,15 @@
                                                 href="/{{ url_data.slug }}/{{ country_name.lower().replace(' ', '-') }}">
                                             {{ country_name }}</a>{% endif %}
                                         </td>
+
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.confirmed }}">{{ "{:,.0f}".format(country.totals.confirmed) }}
                                             {% if country.deltas.confirmed[-1] > 0 %}<span
                                                     class="mg-l-5 tx-10 tx-normal tx-danger"><i
                                                     class="icon ion-md-arrow-up"></i> {{ "{:,.0f}".format(country.deltas.confirmed[-1]) }}</span>{% endif %}
                                         </td>
+
+
                                         <td class="tx-medium text-right"
                                             data-order="{{ country.totals.infected }}">{{ "{:,.0f}".format(country.totals.infected) }}
                                             {% if country.deltas.confirmed[-1] > 0 %}<span
@@ -639,6 +644,8 @@
 
     const chart_max = {{ totals.confirmed }};
 
+    const deaths_chart_max = {{ totals.deaths }};
+
     const tickArray = [{% for date in dates %}gd("{{ date }}"){% if loop.index != dates|length %}, {% endif %}{% endfor %}];
 
     const earliestDate = gd("{{ dates[0] }}");
@@ -791,7 +798,20 @@
 
     const yaxisLog = {
         show: true,
-        max: 1000000,
+        max: chart_max,
+        mode: 'log',
+        transform: function (v) {
+            return v > 0 ? Math.log(v) / Math.LN10 : null
+        },
+        inverseTransform: function (v) {
+            return Math.pow(10, v)
+        },
+        ticks: [0, 10, 100, 1000, 10000, 100000, 1000000]
+    };
+
+    const deathsYaxisLog = {
+        show: true,
+        max: deaths_chart_max + (.2 * deaths_chart_max),
         mode: 'log',
         transform: function (v) {
             return v > 0 ? Math.log(v) / Math.LN10 : null
@@ -807,7 +827,13 @@
         max: chart_max,
     };
 
+    const deathsYaxis = {
+        show: true,
+        max: deaths_chart_max,
+    };
+
     var yaxisUse = yaxis;
+    var deathsYaxisUse = deathsYaxis;
 
     $(function () {
 
@@ -818,19 +844,37 @@
             $(normalButton).addClass('active');
             $(logButton).removeClass('active');
             yaxisUse = yaxis;
-            plotChart();
+            deathsYaxisUse = deathsYaxis;
+            try {
+                plotChart();
+            }
+            catch {};
+            try {
+                plotDeathsChart();
+            }
+            catch {}
         });
 
         $(logButton).click(function () {
             $(logButton).addClass('active');
             $(normalButton).removeClass('active');
             yaxisUse = yaxisLog;
-            plotChart();
+            deathsYaxisUse = deathsYaxisLog;
+            try {
+                plotChart();
+            }
+            catch {};
+            try {
+                plotDeathsChart();
+            }
+            catch {}
+
         });
 
         const normalChart = '#flotChart';
         const deltaChart = '#deltaChart';
-
+        const deathsNormalChart = '#deathsFlotChart';
+        const deathsDeltaChart = '#deathsDeltaChart';
 
         const totalBtn = '#total-btn';
         const deltaBtn = '#delta-btn';
@@ -840,37 +884,45 @@
             e.preventDefault();
             $(totalBtn).addClass('active');
             $(deltaBtn).removeClass('active');
-            $(deltaChart).hide();
+            $(deltaChart).show();
             $(normalChart).show();
-            $(normalLogButtons).show();
+            $(deathsDeltaChart).hide();
+            $(deathsNormalChart).hide();
+            try {
+                plotChart();
+            }
+            catch {};
+            try {
+                plotDeathsChart();
+            }
+            catch {}
+            {#$(normalLogButtons).show();#}
         });
 
         $(deltaBtn).click(function (e) {
             e.preventDefault();
             $(deltaBtn).addClass('active');
             $(totalBtn).removeClass('active');
+            $(deathsNormalChart).show();
+            $(deathsDeltaChart).show()
             $(normalChart).hide();
-            $(deltaChart).show();
-            $(normalLogButtons).hide();
+            $(deltaChart).hide();
+            try {
+                plotChart();
+            }
+            catch {};
+            try {
+                plotDeathsChart();
+            }
+            catch {}
+            {#$(normalLogButtons).hide();#}
         });
 
 
         $(".legend").hide();
 
         function plotChart() {
-            $.plot('#flotChart', [{
-                data: deaths_time_series,
-                color: '#0168fa',
-                label: "deaths"
-            }, {
-                data: recovered_time_series,
-                color: '#d1e6fa',
-                label: "recovered"
-            },
-                {#  {
-                    data: confirmed_trend_series,
-                    color: '#000000'
-                }, #}
+            $.plot('#flotChart', [
                 {
                     data: confirmed_time_series,
                     color: '#69b2f8',
@@ -912,33 +964,97 @@
             });
         }
 
+        function plotDeathsChart() {
+            $.plot('#deathsFlotChart', [
+                {
+                    data: deaths_time_series,
+                    color: '#69b2f8',
+                    label: "confirmed",
+                    lines: {
+                        fill: false,
+                        lineWidth: 1.5
+                    }
+                }], {
+                series: {
+                    "lines": {
+                        show: true,
+                        lineWidth: 1,
+                        fill: false,
+                    },
+                    "points": {
+                        show: true,
+                        fill: false,
+                        lineWidth: 0
+                    },
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                legend: {show: false},
+                yaxis: deathsYaxisUse,
+                xaxis: {
+                    mode: "time",
+
+                }
+            });
+        }
+
         function plotDeltaChart() {
             $.plot('#deltaChart', [
                 {
-                    data: delta_deaths_time_series,
-                    color: '#0168fa',
-                    label: "deaths",
-                    bars: {
-                        show: true,
-                        barWidth: 5000000 * 2,
-
-                    },
-                }, {
-                    data: delta_recovered_time_series,
-                    color: '#d1e6fa',
-                    label: "recovered",
-                    bars: {
-                        show: true,
-                        barWidth: 5000000 * 2,
-
-                    },
-                },
-                //  {
-                //     data: confirmed_trend_series,
-                //     color: '#d1e6fa'
-                // },
-                {
                     data: delta_confirmed_time_series,
+                    color: '#69b2f8',
+                    label: "confirmed",
+                    bars: {
+                        show: true,
+                        barWidth: 5000000 * 2,
+
+                    },
+                }], {
+                series: {
+                    lines: {
+                        show: false,
+                    },
+
+                    shadowSize: 0,
+                    // lines: {
+                    //   show: true,
+                    //   lineWidth: 0,
+                    //   fill: 1
+                    // }
+                },
+                grid: {
+                    borderWidth: 0,
+                    hoverable: true,
+
+                },
+                legend: {show: false},
+                yaxis: {
+                    show: true,
+                },
+                xaxis: {
+                    mode: "time",
+
+                },
+                bars: {
+                    align: "center",
+                    barWidth: 0.5
+                }
+            });
+        }
+
+        function plotDeathsDeltaChart() {
+            $.plot('#deathsDeltaChart', [
+                {
+                    data: delta_deaths_time_series,
                     color: '#69b2f8',
                     label: "confirmed",
                     bars: {
@@ -1046,9 +1162,14 @@
 
         plotChart()
         plotDeltaChart()
-        $(deltaChart).hide();
+        plotDeathsChart();
+        plotDeathsDeltaChart();
+        $(deathsNormalChart).hide();
+        $(deathsDeltaChart).hide();
         $("#flotChart").UseTooltip();
         $("#deltaChart").UseTooltip();
+        $(deathsNormalChart).UseTooltip();
+        $(deathsDeltaChart).UseTooltip();
         {% if url_data.slug == 'us' %}plotMap(){% endif %}
     });
 

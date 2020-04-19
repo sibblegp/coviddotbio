@@ -2,21 +2,23 @@ from flask import Flask, render_template, abort, jsonify
 from analytics import Analytics
 from load_data import DataLoader
 import os
-import numpy
-from regression import exponential_regression
 import config
 from operator import add
+import cache
+from math import log
 
 APP = Flask(__name__)
 
 URL_ATTRIBS = {
-    "/": {
+    "/minus-china": {
         "nav": "Worldwide Without China",
         "sub_nav": False,
         "slug": "worldwide-minus",
         "title": "Covid-19 Worldwide Statistics (minus China)",
         "display_countries": True,
-        "sub_levels": True
+        "sub_levels": True,
+        "report_title": "Country Data",
+        "report_desc": "Track Data by Country"
     },
     "/with-china": {
         "nav": "Worldwide including China",
@@ -24,15 +26,19 @@ URL_ATTRIBS = {
         "slug": "worldwide",
         "title": "Covid-19 Worldwide (including China) Statistics",
         "display_countries": True,
-        "sub_levels": True
+        "sub_levels": True,
+        "report_title": "Country Data",
+        "report_desc": "Track Data by Country"
     },
-    "/minus-china": {
-        "nav": "Worldwide Minus China",
+    "/": {
+        "nav": "Worldwide",
         "sub_nav": False,
-        "slug": "worldwide-minus-china",
-        "title": "Covid-19 Worldwide Statistics (minus China)",
+        "slug": "worldwide-home",
+        "title": "Covid-19 Worldwide Statistics",
         "display_countries": True,
-        "sub_levels": True
+        "sub_levels": True,
+        "report_title": "Country Data",
+        "report_desc": "Track Data by Country"
     },
     "/growth": {
         "nav": "Growth",
@@ -68,8 +74,18 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
     #abort(400)
     url_prefix = os.getenv("URL_PREFIX")
     menu_data = config.WORLDWIDE_REGIONS
-    data = DataLoader()
-    analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, minus_china)
+    if not config.CACHED:
+        data = DataLoader()
+        date_string = data.update_string
+        date_stamp = data.update_date_stamp
+        analytics = Analytics(data.confirmed_raw, data.recovered_raw, data.deaths_raw, data.us_cases_raw, data.us_deaths_raw, minus_china)
+    else:
+        print('USING CACHE')
+        cached_analytics = cache.Cache(minus_china).analytics
+        date_string = cached_analytics["date-string"]
+        date_stamp = cached_analytics['date-stamp']
+        analytics = Analytics(None, None, None, None,
+                              None, minus_china, cached_analytics)
     country_menu = config.COUNTRIES_MENU
     country_slugs = [x.lower().replace(' ', '-') for x in analytics.countries.keys()]
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
@@ -110,13 +126,24 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
                         region_display = True
                         # countries = analytics.countries[country]["regions"]
 
+                    report_title = "Regional Data"
+                    report_details = "Track Data by Region"
+
+                    if 'regions' in analytics.countries['US']['regions'][region] and country_slug == 'us':
+                        region_display = True
+                        countries = analytics.countries[country]["regions"][region]['regions']
+                        report_title = "County Data"
+                        report_details = "Track Data County by County"
+
                     url_data = {
                         "nav": country,
                         "sub_nav": region,
                         "slug": region.lower(),
                         "title": region + " Statistics",
                         "display_countries": False,
-                        "sub_levels": region_display
+                        "sub_levels": region_display,
+                        "report_title": report_title,
+                        "report_desc": report_details
                     }
                     chart_data = {
                         "confirmed": list(zip(analytics.dates, analytics.countries[country]['regions'][region]["dailies"]["confirmed"])),
@@ -154,10 +181,10 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
                         "infected": analytics.countries[country]['regions'][region]["deltas"]["infected"][-1],
                     }
 
-                    regression_data = {
-                        "confirmed": exponential_regression(range(0, analytics.date_count),
-                                                            analytics.countries[country]['regions'][region]["dailies"]["confirmed"])
-                    }
+                    regression_data = {}
+                    #     "confirmed": exponential_regression(range(0, analytics.date_count),
+                    #                                         analytics.countries[country]['regions'][region]["dailies"]["confirmed"])
+                    # }
 
                     if country_slug == 'us':
                         state_totals = {}
@@ -188,13 +215,22 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
                     region_display = True
                     countries = analytics.countries[country]["regions"]
 
+                report_title = "Regional Data"
+                report_desc = "Track Totals by Region"
+
+                if country_slug == 'us':
+                    report_title = "State Data"
+                    report_desc = "Track State by State Data"
+
                 url_data = {
                     "nav": country,
                     "sub_nav": False,
                     "slug": country.lower(),
                     "title": country + " Statistics",
                     "display_countries": False,
-                    "sub_levels": region_display
+                    "sub_levels": region_display,
+                    "report_title": report_title,
+                    "report_desc": report_desc
                 }
                 chart_data = {
                     "confirmed": list(zip(analytics.dates, analytics.countries[country]["dailies"]["confirmed"])),
@@ -233,10 +269,10 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
                     "infected": analytics.countries[country]["deltas"]["infected"][-1],
                 }
 
-                regression_data = {
-                    "confirmed": exponential_regression(range(0, analytics.date_count),
-                                                        analytics.countries[country]["dailies"]["confirmed"])
-                }
+                regression_data = {}
+                #     "confirmed": exponential_regression(range(0, analytics.date_count),
+                #                                         analytics.countries[country]["dailies"]["confirmed"])
+                # }
 
                 if country_slug == 'us':
                     state_totals = {}
@@ -248,7 +284,10 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
                         if ', ' not in state:
                             adjusted_state = convert_state_to_code(state)
                             state_totals[adjusted_state] += analytics.countries[country]["regions"][state]["totals"]["confirmed"]
-                            region_map_data[adjusted_state] = state_totals[adjusted_state]
+                            try:
+                                region_map_data[adjusted_state] = state_totals[adjusted_state]
+                            except:
+                                region_map_data[adjusted_state] = 0
                     print(region_map_data)
 
 
@@ -297,9 +336,9 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
             "infected": list(zip(analytics.dates, deltas_timeseries["infected"]))
         }
 
-        regression_data = {
-            "confirmed": exponential_regression(range(0, analytics.date_count), analytics.totals["dailies"]["confirmed"])
-        }
+        regression_data = {}
+        #     "confirmed": exponential_regression(range(0, analytics.date_count), analytics.totals["dailies"]["confirmed"])
+        # }
 
 
         # print(analytics.totals["deltas"])
@@ -311,21 +350,21 @@ def render_page(url, minus_china, country_slug=None, region_slug=None):
             active_increased = False
         countries = analytics.countries
 
-    trend_chart_data = {"confirmed": list(zip(analytics.dates, regression_data["confirmed"]))}
-
-    dates = analytics.dates
+    #trend_chart_data = {"confirmed": list(zip(analytics.dates, regression_data["confirmed"]))}
+    trend_chart_data = {"confirmed": []}
     print(url_data)
+    dates = analytics.dates
     return render_template('dashboard.jinja2', chart_data=chart_data, totals=totals,
                            primary_deltas=primary_deltas, countries=countries, url_data=url_data, url_prefix=url_prefix,
                            active_increased=active_increased, dates=dates, trend_chart_data=trend_chart_data,
-                           delta_chart_data=delta_chart_data, update_string=data.update_string,
-                           date_stamp=data.update_date_stamp, menu_data=menu_data, region_map_data=region_map_data,
+                           delta_chart_data=delta_chart_data, update_string=date_string,
+                           date_stamp=date_stamp, menu_data=menu_data, region_map_data=region_map_data,
                            country_menu=country_menu, states=states)
 
 
 @APP.route('/')
 def homepage():
-    return render_page(url='/', minus_china=True)
+    return render_page(url='/', minus_china=False)
 
 
 @APP.route('/minus-china')
@@ -365,7 +404,7 @@ def compare_countries():
     country_slug_data = list(zip(country_slugs, analytics.countries.keys()))
     just_over_1000_countries = {}
     for country_name, country in analytics.countries.items():
-        if country_name not in ['Korea, South', 'Iran'] and country['totals']['confirmed'] > 10000:
+        if country_name not in ['Korea, South', 'Iran'] and country['totals']['confirmed'] > 30000:
             update = {
                 country_name: country,
             }

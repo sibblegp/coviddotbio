@@ -1,9 +1,17 @@
+import os
+
+CACHED = os.getenv('use_cache')
+
+
 JH_CONFIRMED_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
 JH_RECOVERED_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
 JH_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
 
 JH_US_CASES = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv"
 JH_US_DEATHS = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv"
+
+CT_DAILY = "https://covidtracking.com/api/v1/states/daily.json"
+CT_TOTALS = "https://covidtracking.com/api/v1/states/current.json"
 
 #API_CONFIRMED_CASES = "https://coviddata.github.io/covid-api/v1/regions/cases.csv"
 #API_RECOVERED_CASES = "https://coviddata.github.io/covid-api/v1/regions/recoveries.csv"
@@ -47,7 +55,7 @@ WORLDWIDE_REGIONS = {
     'South America': ['Ecuador', 'Brazil']
 }
 
-COUNTRIES_MENU = ["US", "Iran", "Italy", "Germany", "France", "Spain", "Switzerland", "UK"]
+COUNTRIES_MENU = ["US", "Iran", "Italy", "Germany", "France", "Spain", "Switzerland", "UK", "Brazil", "Turkey", "Russia"]
 
 STATE_MAP = {
     "AL": "Alabama",
